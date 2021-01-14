@@ -12,7 +12,7 @@ const SidebarComponent = () => {
         <SearchComponent />
       </div>
       {/* <hr /> */}
-      <div className="overflow-y-auto flex-grow chat-list">
+      <div className="chat-list overflow-y-auto flex-grow rounded-bl-3xl">
         <ChatList />
       </div>
     </div>

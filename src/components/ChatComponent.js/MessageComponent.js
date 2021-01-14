@@ -5,7 +5,7 @@ import { faSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 const MessageComponent = () => {
   return (
     <div
-      className="border-black border-2 bg-gray-100 flex flex-row justify-between items-center p-2"
+      className="bg-gray-100 flex flex-row justify-between items-center px-4 py-1"
       style={{ height: "10%" }}
     >
       <div className="react-emoji">
@@ -20,7 +20,7 @@ const MessageComponent = () => {
       <div className="message-input flex-grow mx-2">
         <input
           type="text"
-          className="bg-transparent w-full p-1 text-gray-500 placeholder-gray-500 outline-none rounded-sm"
+          className="bg-white w-full px-4 py-2 text-black placeholder-gray-500 outline-none rounded-full"
           placeholder="Type message here..."
         />
       </div>
