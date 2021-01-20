@@ -1,0 +1,15 @@
+.content-style{
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%,-20%);
+    width: 80%;
+    height: 80%;
+    border: 1px solid black;
+    border-radius: 1rem;
+}
+
+.chatapp-title{
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+}

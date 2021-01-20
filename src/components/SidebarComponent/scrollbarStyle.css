@@ -1,17 +1,17 @@
-::-webkit-scrollbar{
+.chat-list::-webkit-scrollbar{
     width: 8px;
 }
 
-::-webkit-scrollbar-track {
+.chat-list::-webkit-scrollbar-track {
     background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb{
+.chat-list::-webkit-scrollbar-thumb{
     background-color: #60A5FA;
     border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.chat-list::-webkit-scrollbar-thumb:hover {
     background-color: #a8bbbf;
   }
   
