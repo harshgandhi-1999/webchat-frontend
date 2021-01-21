@@ -6,7 +6,7 @@ import AddContactModal from "../AddContactModal.js/AddContactModal";
 import { Button, Form } from "react-bootstrap";
 import { useContacts } from "../../context/ContactContext";
 
-const SidebarHeader = () => {
+const SidebarHeader = ({ openDrawer }) => {
   const [show, setShow] = useState(false);
   const { createContact } = useContacts();
 
@@ -64,11 +64,13 @@ const SidebarHeader = () => {
         </div>
         <div className="user-actions d-flex flex-row justify-content-between align-items-center">
           <div className="new-chat-btn mr-2">
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              color="white"
-              style={{ fontSize: "1.5rem", cursor: "pointer" }}
-            />
+            <Button variant="none" onClick={openDrawer}>
+              <FontAwesomeIcon
+                icon={faPlusCircle}
+                color="white"
+                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+              />
+            </Button>
           </div>
           <DropdownMenu handleOpen={handleOpen} />
         </div>
