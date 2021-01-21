@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import {InputGroup,FormControl,Form,Button} from 'react-bootstrap'
+import {Form,Button} from 'react-bootstrap'
 const SendMessageForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,8 +21,6 @@ const SendMessageForm = () => {
           />
         </Button>
       </div>
-      {/* <div className="message-input flex-grow mx-2">
-      </div> */}
       <div className="message-input-form flex-grow-1">
         <Form
           action=""
@@ -32,18 +30,6 @@ const SendMessageForm = () => {
           <Form.Group controlId="userMessage" className="w-100 m-0">
             <Form.Control type="text" className="rounded-pill" placeholder="Type message here..." />
           </Form.Group>
-          {/* <input
-            type="text"
-            className="bg-white w-100 text-black outline-none rounded"
-            placeholder="Type message here..."
-          /> 
-          <button className="focus:outline-none ml-2" type="submit">
-            <FontAwesomeIcon
-              icon={faPaperPlane}
-              color="blue"
-              style={{ fontSize: "1.5rem" }}
-            />
-          </button> */}
           <Button type="submit" variant="none" className="rounded-circle p-0 ml-2">
             <FontAwesomeIcon
                 icon={faPaperPlane}

@@ -4,7 +4,7 @@ import './chatlistscrollbar.css'
 
 const ChatBox = () => {
   return (
-    <div className="message-list flex-grow-1 px-6 py-4 d-flex flex-column justify-content-start align-items-start overflow-y-auto">
+    <div className="message-list flex-grow-1 px-4 py-4 d-flex flex-column justify-content-start align-items-start overflow-auto">
       <MessageComponent
         text="hello vvvvvvvvvvvvvvvvvvghhhhhhhhhhhhhhh gvhhhhhhhhhhhhhh etrrrrrrrrrrrrrrrrrrrr"
         fromMe={true}
@@ -29,6 +29,7 @@ const ChatBox = () => {
       <MessageComponent text="hi" fromMe={false} />
       <MessageComponent text="hello" fromMe={true} />
       <MessageComponent text="hi" fromMe={false} />
+      <MessageComponent text="hello" fromMe={true} />
     </div>
   );
 };

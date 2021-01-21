@@ -1,13 +1,13 @@
-.chat-list::-webkit-scrollbar{
+::-webkit-scrollbar{
     width: 8px;
 }
 
-.chat-list::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background-color: transparent;
 }
 
 .chat-list::-webkit-scrollbar-thumb{
-    background-color: #60A5FA;
+    background-color: var(--primary-light);
     border-radius: 10px;
 }
 

@@ -6,16 +6,12 @@ import {
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
-import AddContactModal from "../AddContactModal.js/AddContactModal";
-import Backdrop from "../Backdrop/Backdrop";
 
 const SidebarHeader = () => {
 
   return (
     <React.Fragment>
       <div className="sidebar-header d-flex flex-row justify-content-between mb-2">
-        {/* <Backdrop/> */}
-        {/* <AddContactModal/> */}
         <div className="user-profile">
           <FontAwesomeIcon
             icon={faUserCircle}
