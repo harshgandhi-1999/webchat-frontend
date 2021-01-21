@@ -1,7 +1,7 @@
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
+:root{
+    --primary-light: #60A5FA;
+    --primary-dark: #2563EB;
+}
 *{
     box-sizing: border-box;
     margin: 0;

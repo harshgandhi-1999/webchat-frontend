@@ -5,3 +5,11 @@
 .chat-list{
     border-bottom-left-radius: 1rem;
 }
+
+.search-bar .form-control::-webkit-input-placeholder{
+    color: #fff;
+}
+
+.search-bar .form-control:focus{
+    outline:none;
+}
