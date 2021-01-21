@@ -1,26 +1,29 @@
-import React,{useContext, useState} from 'react';
+import React, { useContext, useState } from "react";
 
 const ContactsContext = React.createContext({
-    contacts: [],
-    createContact: (id,name)=>{}
+  contacts: [],
+  createContact: (id, name) => {},
 });
 
-export function useContacts(){
-    return useContext(ContactsContext);
+export function useContacts() {
+  return useContext(ContactsContext);
 }
 
-export function ContactsProvider({children}){
+export function ContactsProvider({ children }) {
+  const [contacts, setContacts] = useState([]);
 
-    const [contacts, setContacts] = useState([]);
+  const createContact = (id, name) => {
+    setContacts((prevContacts) => {
+      return [...prevContacts, { id, name }];
+    });
+  };
 
-    const createContact = (id,name) => {
-        setContacts(prevContacts=>{
-            return [...prevContacts,{id,name}]
-        })
-    }
-
-
-    return <ContactsContext.Provider value={{contacts:contacts,createContact:createContact}}>
-        {children}
+  console.log(contacts);
+  return (
+    <ContactsContext.Provider
+      value={{ contacts: contacts, createContact: createContact }}
+    >
+      {children}
     </ContactsContext.Provider>
+  );
 }
