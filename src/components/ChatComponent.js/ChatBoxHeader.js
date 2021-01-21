@@ -1,8 +1,9 @@
 import React from "react";
+import './chatcomponent.css'
 
 const ChatBoxHeader = () => {
   return (
-    <div className="p-4 text-lg font-bold shadow">
+    <div className="chat-component-header p-4 shadow">
       Username
     </div>
   );

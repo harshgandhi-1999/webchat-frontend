@@ -3,6 +3,7 @@
     /* 400 */
     --primary-dark: #1D4ED8;
     /* 700 */
+    --very-light-gray: #F3F4F6;
 }
 *{
     box-sizing: border-box;
