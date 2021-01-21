@@ -1,13 +1,17 @@
 import React from "react";
+import {InputGroup,FormControl} from 'react-bootstrap'
+import './sidebar.css'
 
 const SearchComponent = () => {
   return (
     <div className="search-bar">
-      <input
-        type="text"
-        className="bg-blue-400 w-full h-8 rounded-sm p-2 text-white placeholder-white outline-none"
-        placeholder="Search Here..."
-      />
+      <InputGroup className="mb-1">
+        <FormControl
+          placeholder="Search here..."
+          aria-label="search-contacts"
+          style={{background: 'var(--primary-light)',height: '2rem',color: '#fff',outline: "none"}}
+        />
+      </InputGroup>
     </div>
   );
 };

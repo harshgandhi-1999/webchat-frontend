@@ -1,14 +1,15 @@
 import React from "react";
 import ChatBoxHeader from "./ChatBoxHeader";
 import ChatBox from "./ChatBox";
-import MessageComponent from "./MessageComponent";
+import SendMessageForm from "./SendMessageForm";
 
 const ChatComponent = () => {
+  // const [messages, setMessages] = useState([]);
   return (
-    <div className="w-2/4 flex flex-col justify-between">
+    <div className="w-50 d-flex flex-column justify-content-between">
       <ChatBoxHeader />
-      <ChatBox />
-      <MessageComponent />
+      <ChatBox/>
+      <SendMessageForm />
     </div>
   );
 };

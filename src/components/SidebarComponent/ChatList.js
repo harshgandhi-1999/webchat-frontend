@@ -1,24 +1,25 @@
 import React from "react";
+import {ListGroup} from 'react-bootstrap'
 
 const ChatList = () => {
   return (
-    <ul className="">
-      <li className="p-4 text-white bg-blue-600 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-    </ul>
+    <ListGroup style={{background: 'transparent'}}>
+      <ListGroup.Item active className="user-select-none">Cras justo odio</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item className="user-select-none">Dapibus ac facilisis in</ListGroup.Item>
+    </ListGroup>
   );
 };
 

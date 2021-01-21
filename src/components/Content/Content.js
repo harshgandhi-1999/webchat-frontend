@@ -2,17 +2,17 @@ import React from "react";
 import SidebarComponent from "../SidebarComponent/SidebarComponent";
 import ChatComponent from "../ChatComponent.js/ChatComponent";
 import ContactInfo from "../ContactInfoComponent.js/ContactInfo";
+import './content.css'
 
 const Content = () => {
   return (
-    <div className="flex flex-col flex-auto h-full overflow-hidden">
+    <div className="content-style bg-white d-flex flex-column overflow-hidden">
       <div
-        className="bg-blue-500 text-xl text-white font-bold text-center rounded-t-3xl shadow"
-        style={{ height: "5%" }}
+        className="chatapp-title bg-primary py-1 text-xl text-white font-bold text-center"
       >
         WebChat
       </div>
-      <div className="flex flex-row flex-auto" style={{ height: "95%" }}>
+      <div className="d-flex flex-row flex-grow-1" style={{ height: "90%" }}>
         <SidebarComponent />
         <ChatComponent />
         <ContactInfo />

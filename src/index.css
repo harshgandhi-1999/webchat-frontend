@@ -1,7 +1,11 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+:root{
+    --primary-light: #60A5FA;
+    /* 400 */
+    --primary-dark: #1D4ED8;
+    /* 700 */
+    --very-light-gray: #F3F4F6;
+    --chat-gray: #E5E7EB;
+}
 *{
     box-sizing: border-box;
     margin: 0;

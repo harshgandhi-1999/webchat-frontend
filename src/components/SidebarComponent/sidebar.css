@@ -1,0 +1,29 @@
+.sidebar-style{
+    border-bottom-left-radius: 1rem;
+}
+
+.chat-list{
+    border-bottom-left-radius: 1rem;
+}
+
+.search-bar .form-control::-webkit-input-placeholder{
+    color: #fff;
+}
+
+.search-bar .form-control:focus{
+    outline:none;
+}
+
+.chat-list .list-group-item{
+    background: transparent;
+    color: #fff;
+}
+
+.chat-list .list-group-item:hover{
+    background: var(--primary-light);
+    cursor: pointer;
+}
+.chat-list .list-group-item.active{
+    background: var(--primary-dark);
+    cursor: pointer;
+}

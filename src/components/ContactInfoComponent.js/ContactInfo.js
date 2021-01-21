@@ -1,17 +1,18 @@
 import React from "react";
 import contactImage from "../../assets/contactImage.png";
+import './contactinfo.css'
 
 const ContactInfo = () => {
   return (
-    <div className="w-1/4 p-4 flex flex-col justify-start items-center shadow-2xl">
-      <div className="contact-profile flex flex-col items-center">
-        <div className="contact-image mb-2 rounded-full text-center w-3/4 h-3/4">
-          <img src={contactImage} alt="contact-image" />
+    <div className="w-25 p-4 d-flex flex-column justify-content-start align-items-center shadow-lg">
+      <div className="contact-profile">
+        <div className="contact-image mb-2 rounded-circle h-75">
+          <img src={contactImage} alt=""/>
         </div>
-        <div className="contact-name text-lg font-bold text-center mb-1">
-          Username
+        <div className="contact-name font-bold mb-1">
+          <h6>Username</h6>
         </div>
-        <div className="contact-status mb-4 text-center text-gray-400">
+        <div className="contact-status mb-4">
           status
         </div>
       </div>

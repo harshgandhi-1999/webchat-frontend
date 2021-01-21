@@ -3,16 +3,17 @@ import SidebarHeader from "./SidebarHeader";
 import SearchComponent from "./SearchComponent";
 import ChatList from "./ChatList";
 import "./scrollbarStyle.css";
+import './sidebar.css'
 
 const SidebarComponent = () => {
   return (
-    <div className="bg-blue-500 w-1/4 rounded-bl-3xl flex flex-col">
-      <div className="p-4 shadow">
+    <div className="sidebar-style bg-primary w-25 d-flex flex-column">
+      <div className="p-4 shadow-sm">
         <SidebarHeader />
         <SearchComponent />
       </div>
       {/* <hr /> */}
-      <div className="chat-list overflow-y-auto flex-grow rounded-bl-3xl">
+      <div className="chat-list overflow-auto flex-grow-1">
         <ChatList />
       </div>
     </div>

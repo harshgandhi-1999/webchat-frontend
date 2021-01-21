@@ -1,6 +1,6 @@
 .App{
     height: 100vh;
-    background-color: #eaeaea;
+    /* background-color: #eaeaea; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;

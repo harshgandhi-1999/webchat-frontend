@@ -1,40 +1,27 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-const MessageComponent = () => {
+const MessageComponent = ({ text, fromMe }) => {
   return (
     <div
-      className="bg-gray-100 flex flex-row justify-between items-center px-4 py-1"
-      style={{ height: "10%" }}
+      className="message-style py-1 px-2 mb-4 rounded"
+      style={fromMe ? {
+        background: 'var(--primary)',
+        alignSelf:"end",
+        color: '#fff',
+        marginLeft: 'auto',
+        maxWidth: '75%'
+      } : {
+        background: 'var(--chat-gray)',
+        alignSelf:"sart",
+        color: '#000',
+        marginRight: 'auto',
+        maxWidth: '75%'
+      }}
     >
-      <div className="react-emoji">
-        <button className="focus:outline-none">
-          <FontAwesomeIcon
-            icon={faSmile}
-            color="orange"
-            style={{ fontSize: "1.5rem" }}
-          />
-        </button>
-      </div>
-      <div className="message-input flex-grow mx-2">
-        <input
-          type="text"
-          className="bg-white w-full px-4 py-2 text-black placeholder-gray-500 outline-none rounded-full"
-          placeholder="Type message here..."
-        />
-      </div>
-      <div className="send-btn">
-        <button className="focus:outline-none">
-          <FontAwesomeIcon
-            icon={faPaperPlane}
-            color="blue"
-            style={{ fontSize: "1.5rem" }}
-          />
-        </button>
-      </div>
+      <p className="text-break mb-0">{text}</p>
     </div>
   );
 };
 
 export default MessageComponent;
+// {background: `${fromMe ? "#3B82F6" : "#E5E7EB"}`}

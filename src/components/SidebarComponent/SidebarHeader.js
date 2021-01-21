@@ -5,38 +5,32 @@ import {
   faPlusCircle,
   faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
+import DropdownMenu from "../DropdownMenu/DropdownMenu";
 
 const SidebarHeader = () => {
+
   return (
-    <div className="sidebar-header flex flex-row justify-between mb-2">
-      <div className="user-profile">
-        <FontAwesomeIcon
-          icon={faUserCircle}
-          color="white"
-          style={{ fontSize: "2rem" }}
-        />
-      </div>
-      <div className="user-actions flex flex-row items-center">
-        <div className="new-chat-btn mr-4">
-          <button className="focus:outline-none">
-            <FontAwesomeIcon
-              icon={faPlusCircle}
-              color="white"
-              style={{ fontSize: "1.5rem" }}
-            />
-          </button>
+    <React.Fragment>
+      <div className="sidebar-header d-flex flex-row justify-content-between mb-2">
+        <div className="user-profile">
+          <FontAwesomeIcon
+            icon={faUserCircle}
+            color="white"
+            style={{fontSize: "2rem" }}
+          />
         </div>
-        <div className="options-btn">
-          <button className="focus:outline-none">
+        <div className="user-actions d-flex flex-row align-items-center">
+          <div className="new-chat-btn mr-4">
             <FontAwesomeIcon
-              icon={faEllipsisV}
-              color="white"
-              style={{ fontSize: "1.5rem" }}
+                icon={faPlusCircle}
+                color="white"
+                style={{ fontSize: "1.5rem",cursor:'pointer' }}
             />
-          </button>
+          </div>
+            <DropdownMenu/>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
