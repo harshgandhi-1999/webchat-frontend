@@ -1,24 +1,27 @@
 import React from "react";
+import {ListGroup} from 'react-bootstrap'
 
 const ChatList = () => {
   return (
-    <ul className="">
-      <li className="p-4 text-white bg-blue-600 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-      <li className="p-4 text-white hover:bg-blue-400 cursor-pointer">hello</li>
-    </ul>
+    <ListGroup style={{background: 'transparent'}}>
+      <ListGroup.Item active>Cras justo odio</ListGroup.Item>
+      <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
+      <ListGroup.Item>Morbi leo risus</ListGroup.Item>
+      <ListGroup.Item>Porta ac consectetur ac</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+      <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+    </ListGroup>
   );
 };
 

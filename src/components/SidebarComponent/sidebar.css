@@ -13,3 +13,17 @@
 .search-bar .form-control:focus{
     outline:none;
 }
+
+.chat-list .list-group-item{
+    background: transparent;
+    color: #fff;
+}
+
+.chat-list .list-group-item:hover{
+    background: var(--primary-light);
+    cursor: pointer;
+}
+.chat-list .list-group-item.active{
+    background: var(--primary-dark);
+    cursor: pointer;
+}

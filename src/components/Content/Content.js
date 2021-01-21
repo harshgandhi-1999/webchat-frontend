@@ -14,8 +14,8 @@ const Content = () => {
       </div>
       <div className="d-flex flex-row flex-grow-1" style={{ height: "90%" }}>
         <SidebarComponent />
-        {/* <ChatComponent />
-        <ContactInfo /> */}
+        <ChatComponent />
+        {/* <ContactInfo /> */}
       </div>
     </div>
   );

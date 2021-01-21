@@ -1,6 +1,8 @@
 :root{
     --primary-light: #60A5FA;
-    --primary-dark: #2563EB;
+    /* 400 */
+    --primary-dark: #1D4ED8;
+    /* 700 */
 }
 *{
     box-sizing: border-box;
