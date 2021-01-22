@@ -1,6 +1,6 @@
 import React from "react";
-import {InputGroup,FormControl} from 'react-bootstrap'
-import './sidebar.css'
+import { InputGroup, FormControl } from "react-bootstrap";
+import "./sidebar.css";
 
 const SearchComponent = () => {
   return (
@@ -9,7 +9,12 @@ const SearchComponent = () => {
         <FormControl
           placeholder="Search here..."
           aria-label="search-contacts"
-          style={{background: 'var(--primary-light)',height: '2rem',color: '#fff',outline: "none"}}
+          style={{
+            background: "var(--primary-light)",
+            height: "2rem",
+            color: "#fff",
+            outline: "none",
+          }}
         />
       </InputGroup>
     </div>
