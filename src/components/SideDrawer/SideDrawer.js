@@ -1,9 +1,11 @@
 import React from "react";
-import { Button } from "react-bootstrap";
+import { Button, ListGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import "./sidedrawer.css";
 import { motion } from "framer-motion";
+import SearchComponent from "../SearchComponent/SearchComponent";
+import { useContacts } from "../../context/ContactContext";
+import "./sidedrawer.css";
 
 const variants = {
   open: { x: "0%" },
@@ -11,6 +13,8 @@ const variants = {
 };
 
 const SideDrawer = ({ show, title, closeDrawer }) => {
+  const { contacts } = useContacts();
+
   return (
     <motion.div
       className="side-drawer d-flex flex-column shadow-sm"
@@ -30,7 +34,22 @@ const SideDrawer = ({ show, title, closeDrawer }) => {
           <h5>{title}</h5>
         </div>
       </div>
-      <div className="side-drawer-body"></div>
+      <div className="side-drawer-body d-flex flex-column overflow-hidden">
+        <div className="search-contacts p-2">
+          <SearchComponent />
+        </div>
+        <div className="all-contacts-list flex-grow-1 overflow-auto">
+          <ListGroup style={{ background: "transparent" }}>
+            {contacts.map((item) => {
+              return (
+                <ListGroup.Item className="user-select-none" key={item.id}>
+                  {item.name}
+                </ListGroup.Item>
+              );
+            })}
+          </ListGroup>
+        </div>
+      </div>
     </motion.div>
   );
 };

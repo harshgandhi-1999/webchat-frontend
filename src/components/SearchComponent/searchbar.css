@@ -1,0 +1,7 @@
+.search-bar .form-control::-webkit-input-placeholder {
+  color: #fff;
+}
+
+.search-bar .form-control:focus {
+  outline: none;
+}

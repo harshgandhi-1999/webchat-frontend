@@ -1,6 +1,6 @@
 import React from "react";
 import SidebarHeader from "./SidebarHeader";
-import SearchComponent from "./SearchComponent";
+import SearchComponent from "../SearchComponent/SearchComponent";
 import ChatList from "./ChatList";
 import "./scrollbarStyle.css";
 import "./sidebar.css";

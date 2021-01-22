@@ -45,3 +45,16 @@
   background: #fff;
   flex-grow: 1;
 }
+
+.search-contacts {
+  background-color: #e9ecef;
+}
+
+.all-contacts-list::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 10px;
+}
+
+.all-contacts-list::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
