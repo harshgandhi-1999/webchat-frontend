@@ -1,16 +1,26 @@
-import React from 'react'
-import {DropdownButton,Dropdown} from 'react-bootstrap'
+import React from "react";
+import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faEllipsisV} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import "./menuStyle.css";
 
-const DropdownMenu = () => {
-    return (
-        <DropdownButton>
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-      </DropdownButton>
-    )
-}
+const DropdownMenu = ({ handleOpen }) => {
+  return (
+    <>
+      <Dropdown>
+        <Dropdown.Toggle variant="toggle">
+          <FontAwesomeIcon
+            icon={faEllipsisV}
+            color="white"
+            style={{ fontSize: "1.5rem", cursor: "pointer" }}
+          />
+        </Dropdown.Toggle>
+        <Dropdown.Menu align="right">
+          <Dropdown.Item onClick={handleOpen}>Add Contact</Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
+    </>
+  );
+};
 
-export default DropdownMenu
+export default DropdownMenu;

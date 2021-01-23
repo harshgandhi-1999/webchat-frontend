@@ -1,0 +1,60 @@
+.side-drawer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: 100%;
+  z-index: 2000;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translate(0%);
+  }
+}
+@keyframes slide-out {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translate(-100%);
+  }
+}
+
+.side-drawer-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.side-drawer-title > h5 {
+  margin-bottom: 0;
+}
+
+.side-drawer-header > .btn {
+  padding: 0;
+  margin-right: 1rem;
+}
+
+.side-drawer-body {
+  background: #fff;
+  flex-grow: 1;
+}
+
+.search-contacts {
+  background-color: #e9ecef;
+}
+
+.all-contacts-list::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 10px;
+}
+
+.all-contacts-list::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}

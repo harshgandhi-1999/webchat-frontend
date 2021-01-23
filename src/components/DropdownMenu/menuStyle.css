@@ -1,3 +1,13 @@
-.dropdown-menu:nth-child(1){
-    
+.dropdown .dropdown-toggle::after{
+    display: none;
+    content: none;
 }
+
+/* .dropdown .btn-primary:hover{
+    background-color: transparent;
+    border-color: transparent;
+} */
+/* .show>.btn-primary.dropdown-toggle{
+    background-color: transparent;
+    border-color: transparent;
+} */
