@@ -15,10 +15,9 @@ const SidebarHeader = ({ openDrawer }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.formContact.value);
-    const id = e.target.formContact.value.trim();
-    const name = e.target.formName.value.trim();
-    createContact(id, name);
+    const contactNo = e.target.contactNo.value.trim();
+    const name = e.target.name.value.trim();
+    createContact(contactNo, name);
   };
 
   return (
@@ -29,13 +28,13 @@ const SidebarHeader = ({ openDrawer }) => {
         title="ADD CONTACT"
       >
         <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formContact">
+          <Form.Group controlId="contactNo">
             <Form.Label>Contact No.</Form.Label>
             <Form.Control type="text" placeholder="Enter contact no." />
           </Form.Group>
-          <Form.Group controlId="formName">
+          <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter Name" />
+            <Form.Control type="text" placeholder="Enter name" />
           </Form.Group>
           <Button
             type="submit"

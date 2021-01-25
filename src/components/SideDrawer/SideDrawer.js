@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Button, ListGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -13,7 +13,7 @@ const variants = {
 };
 
 const SideDrawer = ({ show, title, closeDrawer }) => {
-  const { contacts } = useContacts();
+  const { contacts, handleSelectContact } = useContacts();
 
   return (
     <motion.div
@@ -40,10 +40,15 @@ const SideDrawer = ({ show, title, closeDrawer }) => {
         </div>
         <div className="all-contacts-list flex-grow-1 overflow-auto">
           <ListGroup style={{ background: "transparent" }}>
-            {contacts.map((item) => {
+            {contacts.map((contact, index) => {
               return (
-                <ListGroup.Item className="user-select-none" key={item.id}>
-                  {item.name}
+                <ListGroup.Item
+                  className="user-select-none"
+                  key={contact.contactNo}
+                  active={contact.selected}
+                  onClick={() => handleSelectContact(index)}
+                >
+                  {contact.name || contact.contactNo}
                 </ListGroup.Item>
               );
             })}
