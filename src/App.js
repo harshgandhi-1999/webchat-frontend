@@ -1,11 +1,11 @@
 import React from "react";
 import "./app.css";
 import Content from "./components/Content/Content";
-import {ContactsProvider} from './context/ContactContext'
+import { ContactsProvider } from "./context/ContactContext";
+import { ConversationsProvider } from "./context/ConversationContext";
 // import SocketClient from 'socket.io-client'
 
 function App() {
-
   // useEffect(() => {
   //   const newSocket = SocketClient("http://localhost:8000");
   //   // console.log(newSocket);
@@ -17,13 +17,13 @@ function App() {
   // },[])
 
   return (
-
     <ContactsProvider>
-      <div className="App bg-light position-relative">
-        {/* <div className="absolute text-xl text-blue-700 left-2/4 transform -translate-x-2/4">
+      <ConversationsProvider userNo="1234567890">
+        <div className="App bg-light position-relative">
+          {/* <div className="absolute text-xl text-blue-700 left-2/4 transform -translate-x-2/4">
           Web Chat
         </div> */}
-        {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+          {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
           <path
             fill="#BFDBFE"
             fill-opacity="1"
@@ -38,7 +38,8 @@ function App() {
           ></path>
         </svg> */}
           <Content />
-      </div>
+        </div>
+      </ConversationsProvider>
     </ContactsProvider>
   );
 }

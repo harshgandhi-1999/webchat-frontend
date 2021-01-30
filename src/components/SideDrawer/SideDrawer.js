@@ -5,6 +5,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import SearchComponent from "../SearchComponent/SearchComponent";
 import { useContacts } from "../../context/ContactContext";
+import { useConversations } from "../../context/ConversationContext";
 import "./sidedrawer.css";
 
 const variants = {
@@ -14,6 +15,18 @@ const variants = {
 
 const SideDrawer = ({ show, title, closeDrawer }) => {
   const { contacts, handleSelectContact } = useContacts();
+  const { conversations, createConversation } = useConversations();
+
+  const handleSelect = (contactNo, index) => {
+    handleSelectContact(index);
+    const convo = conversations.find((el) => el.recipientNo === contactNo);
+    console.log("sdbksjdsk");
+    if (convo) {
+      console.log(convo);
+    } else {
+      createConversation(contactNo);
+    }
+  };
 
   return (
     <motion.div
@@ -45,8 +58,7 @@ const SideDrawer = ({ show, title, closeDrawer }) => {
                 <ListGroup.Item
                   className="user-select-none"
                   key={contact.contactNo}
-                  active={contact.selected}
-                  onClick={() => handleSelectContact(index)}
+                  onClick={() => handleSelect(contact.contactNo, index)}
                 >
                   {contact.name || contact.contactNo}
                 </ListGroup.Item>

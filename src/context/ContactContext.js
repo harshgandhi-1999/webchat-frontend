@@ -20,22 +20,16 @@ export function ContactsProvider({ children }) {
     });
   };
 
-  const formattedContacts = contacts.map((contact, index) => {
-    const selected = index === selectedContactIndex;
-    return { ...contact, selected: selected };
-  });
-
   const handleSelectContact = (index) => {
-    if (selectedContactIndex !== index) {
-      setSelectedContactIndex(index);
-    }
+    console.log(index);
+    setSelectedContactIndex(index);
   };
 
-  console.log(contacts);
+  // console.log(contacts);
   return (
     <ContactsContext.Provider
       value={{
-        contacts: formattedContacts,
+        contacts: contacts,
         createContact: createContact,
         selectedContact: contacts[selectedContactIndex],
         handleSelectContact: handleSelectContact,
