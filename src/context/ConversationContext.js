@@ -8,8 +8,6 @@ const ConversationsContext = React.createContext({
   sendMessage: (recipientNo, message, timestamp, fromMe) => {},
   selectedConversation: {},
   selectConversationIndex: () => {},
-  showConvo: {},
-  setShowConvo: () => {},
 });
 
 export function useConversations() {
@@ -21,8 +19,10 @@ export function ConversationsProvider({ userNo, children }) {
     "conversations",
     []
   );
-  const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
-  const [showConvo, setShowConvo] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState({});
+  const [selectedConversationIndex, setSelectedConversationIndex] = useState(
+    null
+  );
 
   const { contacts } = useContacts();
 
@@ -31,8 +31,6 @@ export function ConversationsProvider({ userNo, children }) {
     const contact = contacts.find((c) => {
       return c.contactNo === conversation.recipientNo;
     });
-
-    console.log("contact = ", contact);
     const recipientName = (contact && contact.name) || conversation.recipientNo;
     const recipient = { recipientNo: conversation.recipientNo, recipientName };
 
@@ -49,10 +47,11 @@ export function ConversationsProvider({ userNo, children }) {
     return { ...conversation, messages, recipient, selected };
   });
 
-  const createConversation = (recipientNo) => {
+  const createConversation = (recipientNo, cb) => {
     setConversations((prevConvo) => {
       return [...prevConvo, { recipientNo: recipientNo, messages: [] }];
     });
+    cb();
   };
 
   const addMessageToConversation = ({
@@ -100,16 +99,20 @@ export function ConversationsProvider({ userNo, children }) {
     });
   };
 
+  console.log(selectedConversation);
+  useEffect(() => {
+    setSelectedConversation(formattedConversations[selectedConversationIndex]);
+  }, [selectedConversationIndex]);
+
   return (
     <ConversationsContext.Provider
       value={{
         conversations: formattedConversations,
         createConversation,
         sendMessage,
-        selectedConversation: formattedConversations[selectedConversationIndex],
+        selectedConversation: selectedConversation,
+        setSelectedConversation: setSelectedConversation,
         selectConversationIndex: setSelectedConversationIndex,
-        showConvo: showConvo,
-        setShowConvo: setShowConvo,
       }}
     >
       {children}

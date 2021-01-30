@@ -4,7 +4,6 @@ import { useConversations } from "../../context/ConversationContext";
 
 const ChatList = () => {
   const { conversations, selectConversationIndex } = useConversations();
-  console.log(conversations);
   return (
     <ListGroup style={{ background: "transparent" }}>
       {conversations.map((conversation, index) => {

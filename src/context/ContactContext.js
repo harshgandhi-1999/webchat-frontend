@@ -12,7 +12,7 @@ export function useContacts() {
 
 export function ContactsProvider({ children }) {
   const [contacts, setContacts] = useLocalStorage("contacts", []);
-  const [selectedContactIndex, setSelectedContactIndex] = useState(null);
+  // const [selectedContactIndex, setSelectedContactIndex] = useState(null);
 
   const createContact = (contactNo, name) => {
     setContacts((prevContacts) => {
@@ -20,10 +20,10 @@ export function ContactsProvider({ children }) {
     });
   };
 
-  const handleSelectContact = (index) => {
-    console.log(index);
-    setSelectedContactIndex(index);
-  };
+  // const handleSelectContact = (index) => {
+  //   console.log(index);
+  //   setSelectedContactIndex(index);
+  // };
 
   // console.log(contacts);
   return (
@@ -31,8 +31,8 @@ export function ContactsProvider({ children }) {
       value={{
         contacts: contacts,
         createContact: createContact,
-        selectedContact: contacts[selectedContactIndex],
-        handleSelectContact: handleSelectContact,
+        // selectedContact: contacts[selectedContactIndex],
+        // handleSelectContact: handleSelectContact,
       }}
     >
       {children}

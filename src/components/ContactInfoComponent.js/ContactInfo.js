@@ -6,8 +6,13 @@ import "./contactinfo.css";
 const ContactInfo = () => {
   const { selectedConversation } = useConversations();
   let name =
-    selectedConversation && selectedConversation.recipient.recipientName;
-  let no = selectedConversation && selectedConversation.recipient.recipientNo;
+    selectedConversation &&
+    selectedConversation.recipient &&
+    selectedConversation.recipient.recipientName;
+  let no =
+    selectedConversation &&
+    selectedConversation.recipient &&
+    selectedConversation.recipient.recipientNo;
   return (
     <div className="w-25 p-4 d-flex flex-column justify-content-start align-items-center shadow-lg">
       <div className="contact-profile">
