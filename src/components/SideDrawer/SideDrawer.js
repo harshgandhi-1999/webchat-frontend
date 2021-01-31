@@ -1,10 +1,11 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Button, ListGroup } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import SearchComponent from "../SearchComponent/SearchComponent";
 import { useContacts } from "../../context/ContactContext";
+import { useConversations } from "../../context/ConversationContext";
 import "./sidedrawer.css";
 
 const variants = {
@@ -13,7 +14,38 @@ const variants = {
 };
 
 const SideDrawer = ({ show, title, closeDrawer }) => {
-  const { contacts, handleSelectContact } = useContacts();
+  const { contacts } = useContacts();
+  const {
+    conversations,
+    setSelectedConversation,
+    selectConversationIndex,
+    createConversation,
+  } = useConversations();
+
+  const handleSelect = (contactNo, contactName, index) => {
+    // handleSelectContact(index);
+    let clickedItemIndex = -1;
+    const convo = conversations.find((el, index) => {
+      if (el.recipientNo === contactNo) {
+        clickedItemIndex = index;
+        return el;
+      }
+    });
+
+    if (clickedItemIndex !== -1) {
+      selectConversationIndex(clickedItemIndex);
+    } else {
+      createConversation(contactNo, () =>
+        selectConversationIndex(conversations.length)
+      );
+      // setSelectedConversation({
+      //   recipientNo: contactNo,
+      //   messages: [],
+      //   recipient: { recipientNo: contactNo, recipientName: contactName },
+      //   selected: true,
+      // });
+    }
+  };
 
   return (
     <motion.div
@@ -45,8 +77,9 @@ const SideDrawer = ({ show, title, closeDrawer }) => {
                 <ListGroup.Item
                   className="user-select-none"
                   key={contact.contactNo}
-                  active={contact.selected}
-                  onClick={() => handleSelectContact(index)}
+                  onClick={() =>
+                    handleSelect(contact.contactNo, contact.name, index)
+                  }
                 >
                   {contact.name || contact.contactNo}
                 </ListGroup.Item>

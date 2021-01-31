@@ -12,7 +12,7 @@ export function useContacts() {
 
 export function ContactsProvider({ children }) {
   const [contacts, setContacts] = useLocalStorage("contacts", []);
-  const [selectedContactIndex, setSelectedContactIndex] = useState(null);
+  // const [selectedContactIndex, setSelectedContactIndex] = useState(null);
 
   const createContact = (contactNo, name) => {
     setContacts((prevContacts) => {
@@ -20,25 +20,19 @@ export function ContactsProvider({ children }) {
     });
   };
 
-  const formattedContacts = contacts.map((contact, index) => {
-    const selected = index === selectedContactIndex;
-    return { ...contact, selected: selected };
-  });
+  // const handleSelectContact = (index) => {
+  //   console.log(index);
+  //   setSelectedContactIndex(index);
+  // };
 
-  const handleSelectContact = (index) => {
-    if (selectedContactIndex !== index) {
-      setSelectedContactIndex(index);
-    }
-  };
-
-  console.log(contacts);
+  // console.log(contacts);
   return (
     <ContactsContext.Provider
       value={{
-        contacts: formattedContacts,
+        contacts: contacts,
         createContact: createContact,
-        selectedContact: contacts[selectedContactIndex],
-        handleSelectContact: handleSelectContact,
+        // selectedContact: contacts[selectedContactIndex],
+        // handleSelectContact: handleSelectContact,
       }}
     >
       {children}

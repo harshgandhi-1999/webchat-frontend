@@ -1,15 +1,24 @@
 import React from "react";
 import { ListGroup } from "react-bootstrap";
+import { useConversations } from "../../context/ConversationContext";
 
 const ChatList = () => {
+  const { conversations, selectConversationIndex } = useConversations();
   return (
     <ListGroup style={{ background: "transparent" }}>
-      <ListGroup.Item active className="user-select-none">
-        Cras justo odio
-      </ListGroup.Item>
-      <ListGroup.Item className="user-select-none">
-        Cras justo odio
-      </ListGroup.Item>
+      {conversations.map((conversation, index) => {
+        return (
+          <ListGroup.Item
+            className="user-select-none"
+            action
+            active={conversation.selected}
+            key={index}
+            onClick={() => selectConversationIndex(index)}
+          >
+            {conversation.recipient.recipientName}
+          </ListGroup.Item>
+        );
+      })}
     </ListGroup>
   );
 };

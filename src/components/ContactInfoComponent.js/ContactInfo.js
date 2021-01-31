@@ -1,10 +1,18 @@
 import React from "react";
 import contactImage from "../../assets/contactImage.png";
-import { useContacts } from "../../context/ContactContext";
+import { useConversations } from "../../context/ConversationContext";
 import "./contactinfo.css";
 
 const ContactInfo = () => {
-  const { selectedContact } = useContacts();
+  const { selectedConversation } = useConversations();
+  let name =
+    selectedConversation &&
+    selectedConversation.recipient &&
+    selectedConversation.recipient.recipientName;
+  let no =
+    selectedConversation &&
+    selectedConversation.recipient &&
+    selectedConversation.recipient.recipientNo;
   return (
     <div className="w-25 p-4 d-flex flex-column justify-content-start align-items-center shadow-lg">
       <div className="contact-profile">
@@ -12,13 +20,7 @@ const ContactInfo = () => {
           <img src={contactImage} alt="" />
         </div>
         <div className="contact-name font-bold mb-1">
-          <h6>
-            {selectedContact
-              ? selectedContact.name !== null && selectedContact.name.length > 0
-                ? selectedContact.name
-                : selectedContact.contactNo
-              : "Username"}
-          </h6>
+          <h6>{name != null ? name : no}</h6>
         </div>
         <div className="contact-status mb-4">status</div>
       </div>
