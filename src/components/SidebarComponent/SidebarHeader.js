@@ -6,41 +6,77 @@ import AddContactModal from "../AddContactModal.js/AddContactModal";
 import { Button, Form } from "react-bootstrap";
 import { useContacts } from "../../context/ContactContext";
 
+const RedAsterisk = () => {
+  return <span style={{ color: "red" }}>*</span>;
+};
+
 const SidebarHeader = ({ openDrawer }) => {
-  const [show, setShow] = useState(false);
-  const { createContact } = useContacts();
+  const [showContactModal, setShowContactModal] = useState(false);
+  const { contacts, createContact } = useContacts();
+  const [validated, setValidated] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleOpen = () => setShow(true);
+  const handleClose = () => setShowContactModal(false);
+  const handleOpen = () => setShowContactModal(true);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(e.target.formContact.value);
-    const id = e.target.formContact.value.trim();
-    const name = e.target.formName.value.trim();
-    createContact(id, name);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      setValidated(true);
+      event.stopPropagation();
+    } else {
+      const contactNo = event.target.contactNo.value.trim();
+      const name = event.target.name.value.trim();
+      let alreadyThere = contacts.some((el) => el.contactNo === contactNo);
+      if (alreadyThere === true) {
+        alert("This contact no. already exist");
+      } else {
+        handleClose();
+        createContact(contactNo, name);
+        setValidated(false);
+      }
+    }
   };
 
   return (
     <React.Fragment>
       <AddContactModal
-        show={show}
+        show={showContactModal}
         handleClose={handleClose}
         title="ADD CONTACT"
       >
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formContact">
-            <Form.Label>Contact No.</Form.Label>
-            <Form.Control type="text" placeholder="Enter contact no." />
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form.Group controlId="contactNo">
+            <Form.Label>
+              Contact No.
+              <RedAsterisk />
+            </Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter contact no."
+              required
+              pattern="^\d{3}$"
+            />
+            <Form.Text id="passwordHelpBlock" muted>
+              Your password must be a 3 digit number
+            </Form.Text>
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid passsword
+            </Form.Control.Feedback>
           </Form.Group>
-          <Form.Group controlId="formName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter Name" />
+          <Form.Group controlId="name">
+            <Form.Label>
+              Name
+              <RedAsterisk />
+            </Form.Label>
+            <Form.Control type="text" placeholder="Enter name" required />
+            <Form.Control.Feedback type="invalid">
+              Please provide a valid name
+            </Form.Control.Feedback>
           </Form.Group>
           <Button
             type="submit"
             variant="success"
-            onClick={handleClose}
             style={{ float: "right", marginLeft: "0.5rem" }}
           >
             ADD
