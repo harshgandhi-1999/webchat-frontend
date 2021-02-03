@@ -39,9 +39,9 @@ export function ConversationsProvider({ userNo, children }) {
       const contact = contacts.find((c) => {
         return c.contactNo === message.sender;
       });
-      const name = (contact && contact.contactNo) || message.sender;
+      const name = (contact && contact.name) || message.sender;
       const fromMe = userNo === message.sender;
-      return { ...message, senderName: name, fromMe };
+      return { ...message, fromMe };
     });
     const selected = index === selectedConversationIndex;
     return { ...conversation, messages, recipient, selected };
@@ -89,13 +89,16 @@ export function ConversationsProvider({ userNo, children }) {
     });
   };
 
-  const sendMessage = (recipientNo, message, timestamp, fromMe) => {
-    addMessageToConversation({
-      recipientNo,
-      message,
-      timestamp,
-      fromMe,
-      sender: userNo,
+  const sendMessage = (messageBody) => {
+    addMessageToConversation({ ...messageBody, sender: userNo });
+    setSelectedConversation((prevSelected) => {
+      return {
+        ...prevSelected,
+        messages: [
+          ...prevSelected.messages,
+          { ...messageBody, sender: userNo },
+        ],
+      };
     });
   };
 
