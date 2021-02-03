@@ -9,10 +9,13 @@ const SendMessageForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.userMessage.value);
-    const message = e.target.userMessage.value.trim();
-    const timestamp = Date.now();
-    sendMessage(selectedConversation.recipientNo, message, timestamp, true);
+    const messageBody = {
+      message: e.target.userMessage.value.trim(),
+      timestamp: Date.now(),
+      fromMe: true,
+      recipientNo: selectedConversation.recipientNo,
+    };
+    sendMessage(messageBody);
     e.target.userMessage.value = "";
   };
 

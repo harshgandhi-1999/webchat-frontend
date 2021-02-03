@@ -9,8 +9,14 @@ const ChatBox = () => {
     <div className="message-list flex-grow-1 px-4 py-4 d-flex flex-column justify-content-start align-items-start overflow-auto">
       {selectedConversation &&
         selectedConversation.messages &&
-        selectedConversation.messages.map((item) => {
-          return <MessageComponent text={item.message} fromMe={item.fromMe} />;
+        selectedConversation.messages.map((item, index) => {
+          return (
+            <MessageComponent
+              key={index}
+              text={item.message}
+              fromMe={item.fromMe}
+            />
+          );
         })}
     </div>
   );
