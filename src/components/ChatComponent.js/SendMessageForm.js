@@ -9,14 +9,16 @@ const SendMessageForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const messageBody = {
-      message: e.target.userMessage.value.trim(),
-      timestamp: Date.now(),
-      fromMe: true,
-      recipientNo: selectedConversation.recipientNo,
-    };
-    sendMessage(messageBody);
-    e.target.userMessage.value = "";
+    if (e.target.userMessage.value.trim() !== "") {
+      const messageBody = {
+        message: e.target.userMessage.value.trim(),
+        timestamp: Date.now(),
+        fromMe: true,
+        recipientNo: selectedConversation.recipientNo,
+      };
+      sendMessage(messageBody);
+      e.target.userMessage.value = "";
+    }
   };
 
   return (

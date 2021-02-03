@@ -1,22 +1,27 @@
 import React from "react";
 
-const MessageComponent = ({ text, fromMe }) => {
+const MessageComponent = ({ refprop, text, fromMe }) => {
   return (
     <div
+      ref={refprop}
       className="message-style py-1 px-2 mb-4 rounded"
-      style={fromMe ? {
-        background: 'var(--primary)',
-        alignSelf:"end",
-        color: '#fff',
-        marginLeft: 'auto',
-        maxWidth: '75%'
-      } : {
-        background: 'var(--chat-gray)',
-        alignSelf:"sart",
-        color: '#000',
-        marginRight: 'auto',
-        maxWidth: '75%'
-      }}
+      style={
+        fromMe
+          ? {
+              background: "var(--primary)",
+              alignSelf: "end",
+              color: "#fff",
+              marginLeft: "auto",
+              maxWidth: "75%",
+            }
+          : {
+              background: "var(--chat-gray)",
+              alignSelf: "sart",
+              color: "#000",
+              marginRight: "auto",
+              maxWidth: "75%",
+            }
+      }
     >
       <p className="text-break mb-0">{text}</p>
     </div>

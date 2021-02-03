@@ -39,7 +39,7 @@ export function ConversationsProvider({ userNo, children }) {
       const contact = contacts.find((c) => {
         return c.contactNo === message.sender;
       });
-      // const name = (contact && contact.name) || message.sender;
+      const name = (contact && contact.name) || message.sender;
       const fromMe = userNo === message.sender;
       return { ...message, fromMe };
     });
