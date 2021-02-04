@@ -1,10 +1,10 @@
 import React from "react";
 
-const MessageComponent = ({ refprop, text, fromMe }) => {
+const MessageComponent = ({ refprop, text, fromMe, sender }) => {
   return (
     <div
       ref={refprop}
-      className="message-style py-1 px-2 mb-4 rounded"
+      className="message-style py-1 px-2 mb-2 rounded"
       style={
         fromMe
           ? {
@@ -23,6 +23,7 @@ const MessageComponent = ({ refprop, text, fromMe }) => {
             }
       }
     >
+      <h6>{fromMe ? "You" : sender.name}</h6>
       <p className="text-break mb-0">{text}</p>
     </div>
   );

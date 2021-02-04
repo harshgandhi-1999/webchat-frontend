@@ -7,7 +7,7 @@
   z-index: 2000;
 }
 
-@keyframes slide-in {
+/* @keyframes slide-in {
   0% {
     transform: translateX(-100%);
   }
@@ -22,7 +22,7 @@
   100% {
     transform: translate(-100%);
   }
-}
+} */
 
 .side-drawer-header {
   display: flex;
@@ -48,6 +48,14 @@
 
 .search-contacts {
   background-color: #e9ecef;
+}
+
+.all-contacts-list .list-group {
+  border-radius: 0px;
+}
+
+.all-contacts-list .list-group-item:hover {
+  background: var(--very-light-gray);
 }
 
 .all-contacts-list::-webkit-scrollbar-thumb {

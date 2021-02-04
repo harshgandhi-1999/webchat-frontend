@@ -14,8 +14,13 @@
   cursor: pointer;
 }
 
+.chat-list .list-group {
+  border-radius: 0px;
+}
+
 .chat-list .list-group-item:hover {
   background: var(--primary-light);
+  color: #fff;
 }
 .chat-list .list-group-item.active {
   background: var(--primary-dark);
