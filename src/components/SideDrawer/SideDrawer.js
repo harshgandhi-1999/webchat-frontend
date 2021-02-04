@@ -17,33 +17,28 @@ const SideDrawer = ({ show, title, closeDrawer }) => {
   const { contacts } = useContacts();
   const {
     conversations,
-    setSelectedConversation,
     selectConversationIndex,
     createConversation,
   } = useConversations();
 
   const handleSelect = (contactNo, contactName, index) => {
-    // handleSelectContact(index);
-    let clickedItemIndex = -1;
-    const convo = conversations.find((el, index) => {
-      if (el.recipientNo === contactNo) {
-        clickedItemIndex = index;
-        return el;
-      }
-    });
+    //checking if selected contact is already present in conversations list
+    const clickedItemIndex = conversations.findIndex(
+      (el) => el.recipient.recipientNo === contactNo
+    );
 
     if (clickedItemIndex !== -1) {
+      //means that it is already present in conversation list then select that index
       selectConversationIndex(clickedItemIndex);
     } else {
-      createConversation(contactNo, () =>
+      //means not present, so create new conversation on select with no messages
+      const recipient = {
+        recipientNo: contactNo,
+        recipientName: contactName,
+      };
+      createConversation(recipient, () =>
         selectConversationIndex(conversations.length)
       );
-      // setSelectedConversation({
-      //   recipientNo: contactNo,
-      //   messages: [],
-      //   recipient: { recipientNo: contactNo, recipientName: contactName },
-      //   selected: true,
-      // });
     }
   };
 

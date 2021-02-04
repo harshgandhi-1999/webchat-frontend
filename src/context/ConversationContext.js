@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { useContacts } from "./ContactContext";
+import { useAuth } from "./AuthContext";
+// import { useContacts } from "./ContactContext";
 
 const ConversationsContext = React.createContext({
   conversations: [],
@@ -14,7 +15,7 @@ export function useConversations() {
   return useContext(ConversationsContext);
 }
 
-export function ConversationsProvider({ userNo, children }) {
+export function ConversationsProvider({ children }) {
   const [conversations, setConversations] = useLocalStorage(
     "conversations",
     []
@@ -24,53 +25,37 @@ export function ConversationsProvider({ userNo, children }) {
     null
   );
 
-  const { contacts } = useContacts();
+  //using contact context and user context
+  // const { contacts } = useContacts();
+  const { user } = useAuth();
 
   const formattedConversations = conversations.map((conversation, index) => {
-    //for recipient
-    const contact = contacts.find((c) => {
-      return c.contactNo === conversation.recipientNo;
-    });
-    const recipientName = (contact && contact.name) || conversation.recipientNo;
-    const recipient = { recipientNo: conversation.recipientNo, recipientName };
-
     //for messages
     const messages = conversation.messages.map((message) => {
-      const contact = contacts.find((c) => {
-        return c.contactNo === message.sender;
-      });
-      const name = (contact && contact.name) || message.sender;
-      const fromMe = userNo === message.sender;
+      // const contact = contacts.find((c) => {
+      //   return c.contactNo === message.sender.contactNo;
+      // });
+      // const name = (contact && contact.name) || message.sender.contactNo;
+      const fromMe = user.contactNo === message.sender.contactNo;
       return { ...message, fromMe };
     });
     const selected = index === selectedConversationIndex;
-    return { ...conversation, messages, recipient, selected };
+    return { ...conversation, messages, selected };
   });
 
-  const createConversation = (recipientNo, cb) => {
+  const createConversation = (recipient, cb) => {
     setConversations((prevConvo) => {
-      return [...prevConvo, { recipientNo: recipientNo, messages: [] }];
+      return [...prevConvo, { recipient: recipient, messages: [] }];
     });
     cb();
   };
 
-  const addMessageToConversation = ({
-    recipientNo,
-    message,
-    timestamp,
-    fromMe,
-    sender,
-  }) => {
+  console.log(formattedConversations);
+  const addMessageToConversation = (newMessage) => {
     setConversations((prevConversations) => {
       let madeConvoInitially = false;
-      const newMessage = {
-        message,
-        timestamp,
-        fromMe,
-        sender,
-      };
       const newConversations = prevConversations.map((convo) => {
-        if (convo.recipientNo === recipientNo) {
+        if (convo.recipient.recipientNo === newMessage.recipient.recipientNo) {
           madeConvoInitially = true;
           return { ...convo, messages: [...convo.messages, newMessage] };
         }
@@ -83,21 +68,18 @@ export function ConversationsProvider({ userNo, children }) {
       } else {
         return [
           ...prevConversations,
-          { recipientNo: recipientNo, messages: [newMessage] },
+          { recipient: newMessage.recipient, messages: [newMessage] },
         ];
       }
     });
   };
 
   const sendMessage = (messageBody) => {
-    addMessageToConversation({ ...messageBody, sender: userNo });
+    addMessageToConversation({ ...messageBody, sender: user });
     setSelectedConversation((prevSelected) => {
       return {
         ...prevSelected,
-        messages: [
-          ...prevSelected.messages,
-          { ...messageBody, sender: userNo },
-        ],
+        messages: [...prevSelected.messages, { ...messageBody, sender: user }],
       };
     });
   };
