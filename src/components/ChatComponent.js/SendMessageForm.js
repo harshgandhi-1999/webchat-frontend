@@ -13,7 +13,6 @@ const SendMessageForm = () => {
       const messageBody = {
         message: e.target.userMessage.value.trim(),
         timestamp: Date.now(),
-        fromMe: true,
         recipient: selectedConversation.recipient,
       };
       sendMessage(messageBody);

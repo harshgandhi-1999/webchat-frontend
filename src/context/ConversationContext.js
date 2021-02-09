@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { useAuth } from "./AuthContext";
-// import { useContacts } from "./ContactContext";
+import { useSocket } from "./SocketProvider";
 
 const ConversationsContext = React.createContext({
   conversations: [],
@@ -20,7 +20,7 @@ export function ConversationsProvider({ children }) {
     "conversations",
     []
   );
-  const [selectedConversation, setSelectedConversation] = useState({});
+  const [selectedConversation, setSelectedConversation] = useState(null);
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(
     null
   );
@@ -28,6 +28,7 @@ export function ConversationsProvider({ children }) {
   //using contact context and user context
   // const { contacts } = useContacts();
   const { user } = useAuth();
+  const { socket } = useSocket();
 
   const formattedConversations = conversations.map((conversation, index) => {
     //for messages
@@ -50,43 +51,82 @@ export function ConversationsProvider({ children }) {
     cb();
   };
 
-  console.log(formattedConversations);
-  const addMessageToConversation = (newMessage) => {
-    setConversations((prevConversations) => {
-      let madeConvoInitially = false;
-      const newConversations = prevConversations.map((convo) => {
-        if (convo.recipient.recipientNo === newMessage.recipient.recipientNo) {
-          madeConvoInitially = true;
-          return { ...convo, messages: [...convo.messages, newMessage] };
+  // console.log(formattedConversations);
+  const addMessageToConversation = useCallback(
+    (newMessage) => {
+      setConversations((prevConversations) => {
+        let madeConvoInitially = false;
+        const newConversations = prevConversations.map((convo) => {
+          if (
+            convo.recipient.recipientNo === newMessage.recipient.recipientNo
+          ) {
+            madeConvoInitially = true;
+            return { ...convo, messages: [...convo.messages, newMessage] };
+          }
+
+          return convo;
+        });
+
+        if (madeConvoInitially) {
+          return newConversations;
+        } else {
+          return [
+            ...prevConversations,
+            { recipient: newMessage.recipient, messages: [newMessage] },
+          ];
         }
-
-        return convo;
       });
-
-      if (madeConvoInitially) {
-        return newConversations;
-      } else {
-        return [
-          ...prevConversations,
-          { recipient: newMessage.recipient, messages: [newMessage] },
-        ];
-      }
-    });
-  };
+    },
+    [setConversations]
+  );
 
   const sendMessage = (messageBody) => {
+    socket.emit("send-message", messageBody);
     addMessageToConversation({ ...messageBody, sender: user });
     setSelectedConversation((prevSelected) => {
       return {
         ...prevSelected,
-        messages: [...prevSelected.messages, { ...messageBody, sender: user }],
+        messages: [
+          ...prevSelected.messages,
+          { ...messageBody, fromMe: true, sender: user },
+        ],
       };
     });
   };
 
-  console.log(selectedConversation);
+  // effect for recieving message
   useEffect(() => {
-    setSelectedConversation(formattedConversations[selectedConversationIndex]);
+    if (socket == null) return;
+
+    socket.on("recieve-message", (message) => {
+      console.log(message);
+      addMessageToConversation(message);
+      if (
+        selectedConversation &&
+        selectedConversation.recipient.recipientNo ===
+          message.recipient.recipientNo
+      ) {
+        setSelectedConversation((prevSelected) => {
+          return {
+            ...prevSelected,
+            messages: [...prevSelected.messages, { ...message, fromMe: false }],
+          };
+        });
+      }
+    });
+
+    return () => socket.off("recieve-message");
+  }, [socket, addMessageToConversation, selectedConversation]);
+
+  console.log(selectedConversation);
+  // console.log(formattedConversations[selectedConversationIndex]);
+  useEffect(() => {
+    if (selectedConversationIndex !== null) {
+      console.log("sdiskdnjsdn");
+      setSelectedConversation(
+        formattedConversations[selectedConversationIndex]
+      );
+    }
   }, [selectedConversationIndex]);
 
   return (
