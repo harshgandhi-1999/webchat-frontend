@@ -14,13 +14,14 @@ export function SocketProvider({ children }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    const newSocket = io("http://localhost:8000", {
-      query: { contactNo: user.contactNo, name: user.name },
-    });
-    setSocket(newSocket);
-
-    return () => newSocket.close();
-  }, [user.contactNo, user.name]);
+    if (Object.keys(user).length !== 0 && user !== null) {
+      const newSocket = io("http://localhost:8000", {
+        query: { contactNo: user.contactNo, name: user.username },
+      });
+      setSocket(newSocket);
+      return () => newSocket.close();
+    }
+  }, [user]);
 
   return (
     <SocketContext.Provider value={{ socket: socket }}>

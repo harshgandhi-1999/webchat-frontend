@@ -118,7 +118,7 @@ export function ConversationsProvider({ children }) {
     return () => socket.off("recieve-message");
   }, [socket, addMessageToConversation, selectedConversation]);
 
-  console.log(selectedConversation);
+  // console.log(selectedConversation);
   // console.log(formattedConversations[selectedConversationIndex]);
   useEffect(() => {
     if (selectedConversationIndex !== null) {
