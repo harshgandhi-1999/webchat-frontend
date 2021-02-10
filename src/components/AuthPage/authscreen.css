@@ -1,0 +1,53 @@
+.auth-screen {
+  background-image: linear-gradient(
+    to bottom,
+    #1d4ed8,
+    #2a6ee6,
+    #488cf1,
+    #6ca9f8,
+    #93c5fd
+  );
+  height: 100%;
+}
+
+.app-heading {
+  color: #fff;
+  text-align: center;
+  margin-top: 1rem;
+  font-family: "Dancing Script", cursive;
+}
+
+.auth-screen .card {
+  width: 90%;
+  max-width: 500px;
+  margin: 2rem auto;
+}
+.auth-screen .card-header-tabs {
+  margin: 0;
+  /* border: 1px solid red; */
+}
+.auth-screen .card-header-tabs > .nav-item {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.auth-screen .nav-link {
+  flex-grow: 1;
+}
+
+.auth-screen .nav-tabs a {
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.auth-screen .nav-tabs > .nav-link {
+  color: #000;
+}
+
+.auth-screen .nav-tabs > .nav-link.active {
+  color: #007bff;
+}
+
+.blob {
+  width: 10rem;
+}

@@ -1,12 +1,12 @@
-:root{
-    --primary-light: #60A5FA;
-    /* 400 */
-    --primary-dark: #1D4ED8;
-    /* 700 */
-    --very-light-gray: #F3F4F6;
-    --chat-gray: #E5E7EB;
+:root {
+  --primary-light: #60a5fa;
+  /* 400 */
+  --primary-dark: #1d4ed8;
+  /* 700 */
+  --very-light-gray: #f3f4f6;
+  --chat-gray: #e5e7eb;
 }
-*{
-    box-sizing: border-box;
-    margin: 0;
+* {
+  box-sizing: border-box;
+  margin: 0;
 }

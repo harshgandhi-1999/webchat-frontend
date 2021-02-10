@@ -5,7 +5,7 @@ import { ContactsProvider } from "./context/ContactContext";
 import { ConversationsProvider } from "./context/ConversationContext";
 import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketProvider";
-// import useLocalStorage from "./hooks/useLocalStorage";
+import AuthScreen from "./components/AuthPage/AuthScreen";
 
 function App() {
   return (
@@ -13,7 +13,7 @@ function App() {
       <SocketProvider>
         <ContactsProvider>
           <ConversationsProvider>
-            <div className="App bg-light position-relative">
+            <div className="App position-relative">
               {/* <div className="absolute text-xl text-blue-700 left-2/4 transform -translate-x-2/4">
           Web Chat
         </div> */}
@@ -31,7 +31,8 @@ function App() {
             d="M0,128L26.7,149.3C53.3,171,107,213,160,197.3C213.3,181,267,107,320,106.7C373.3,107,427,181,480,213.3C533.3,245,587,235,640,192C693.3,149,747,75,800,85.3C853.3,96,907,192,960,218.7C1013.3,245,1067,203,1120,176C1173.3,149,1227,139,1280,144C1333.3,149,1387,171,1413,181.3L1440,192L1440,320L1413.3,320C1386.7,320,1333,320,1280,320C1226.7,320,1173,320,1120,320C1066.7,320,1013,320,960,320C906.7,320,853,320,800,320C746.7,320,693,320,640,320C586.7,320,533,320,480,320C426.7,320,373,320,320,320C266.7,320,213,320,160,320C106.7,320,53,320,27,320L0,320Z"
           ></path>
         </svg> */}
-              <Content />
+              {/* <Content /> */}
+              <AuthScreen />
             </div>
           </ConversationsProvider>
         </ContactsProvider>
