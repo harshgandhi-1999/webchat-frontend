@@ -2,9 +2,11 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../../context/AuthContext";
 import "./menuStyle.css";
 
 const DropdownMenu = ({ handleOpen }) => {
+  const { logout } = useAuth();
   return (
     <>
       <Dropdown>
@@ -17,6 +19,7 @@ const DropdownMenu = ({ handleOpen }) => {
         </Dropdown.Toggle>
         <Dropdown.Menu align="right">
           <Dropdown.Item onClick={handleOpen}>Add Contact</Dropdown.Item>
+          <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </>

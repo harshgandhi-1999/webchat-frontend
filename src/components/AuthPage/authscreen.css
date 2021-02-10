@@ -48,6 +48,10 @@
   color: #007bff;
 }
 
+.auth-screen .tab-pane {
+  padding: 1rem;
+}
+
 .blob {
   width: 10rem;
 }
