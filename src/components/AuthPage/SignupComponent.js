@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
+import { toast } from "react-toastify";
 
 const SignupComponent = () => {
   const [validated, setValidated] = useState(false);
@@ -25,7 +26,12 @@ const SignupComponent = () => {
       axiosInstance
         .post("/signup", requestBody)
         .then((res) => {
-          alert(res.data.message + ". Please login to continue...");
+          toast.success(
+            `${res.data.message + ". Please login to continue..."}`,
+            {
+              toastId: "signup_success_toast",
+            }
+          );
           event.target.username.value = "";
           event.target.phoneNo.value = "";
           event.target.password.value = "";
@@ -33,9 +39,13 @@ const SignupComponent = () => {
         .catch((err) => {
           console.log(err);
           if (err.response) {
-            alert(err.response.data.message);
+            toast.error(`${err.response.data.message}`, {
+              toastId: "signup_failed_toast",
+            });
           } else {
-            alert(err.message);
+            toast.error(`${err.message}`, {
+              className: "some_error_toast",
+            });
           }
         });
 

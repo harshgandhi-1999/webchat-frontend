@@ -3,6 +3,7 @@ import { Form, Button } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
 import { useAuth } from "../../context/AuthContext";
+import { toast } from "react-toastify";
 
 const LoginComponent = () => {
   const [validated, setValidated] = useState(false);
@@ -15,8 +16,8 @@ const LoginComponent = () => {
       setValidated(true);
       event.stopPropagation();
     } else {
-      const phoneNo = event.target.phoneNo.value.trim();
-      const password = event.target.password.value.trim();
+      const phoneNo = event.target.login_phoneNo.value.trim();
+      const password = event.target.login_password.value.trim();
 
       const requestBody = JSON.stringify({
         contact: phoneNo,
@@ -27,16 +28,25 @@ const LoginComponent = () => {
         .post("/login", requestBody)
         .then((res) => {
           setUser({ ...res.data.userInfo, token: res.data.token });
+          toast.success(`${res.data.message}`, {
+            toastId: "login_success_toast",
+          });
 
-          event.target.phoneNo.value = "";
-          event.target.password.value = "";
+          event.target.login_phoneNo.value = "";
+          event.target.login_password.value = "";
         })
         .catch((err) => {
           console.log(err);
           if (err.response) {
-            alert(err.response.data.message);
+            toast.error(`${err.response.data.message}`, {
+              toastId: "login_failed_toast",
+            });
+            // alert(err.response.data.message);
           } else {
-            alert(err.message);
+            toast.error(`${err.message}`, {
+              className: "some_error_toast",
+            });
+            // alert(err.message);
           }
         });
       setValidated(false);
@@ -45,7 +55,7 @@ const LoginComponent = () => {
   return (
     <div>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Form.Group controlId="phoneNo">
+        <Form.Group controlId="login_phoneNo">
           <Label text="Phone no." />
           <Form.Control
             type="text"
@@ -57,7 +67,7 @@ const LoginComponent = () => {
             Please provide a valid phone no.
           </Form.Control.Feedback>
         </Form.Group>
-        <Form.Group controlId="password">
+        <Form.Group controlId="login_password">
           <Label text="Password" />
           <Form.Control
             type="password"
