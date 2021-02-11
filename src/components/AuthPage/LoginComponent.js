@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
 import { useAuth } from "../../context/AuthContext";
@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 const LoginComponent = () => {
   const [validated, setValidated] = useState(false);
   const { setUser } = useAuth();
+  const [btnloading, setBtnLoading] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,7 +24,7 @@ const LoginComponent = () => {
         contact: phoneNo,
         password: password,
       });
-
+      setBtnLoading(true);
       axiosInstance
         .post("/login", requestBody)
         .then((res) => {
@@ -34,9 +35,11 @@ const LoginComponent = () => {
 
           event.target.login_phoneNo.value = "";
           event.target.login_password.value = "";
+          setBtnLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setBtnLoading(false);
           if (err.response) {
             toast.error(`${err.response.data.message}`, {
               toastId: "login_failed_toast",
@@ -82,8 +85,12 @@ const LoginComponent = () => {
             Please provide a valid password
           </Form.Control.Feedback>
         </Form.Group>
-        <Button type="submit" variant="success">
-          Login
+        <Button type="submit" variant="success" disabled={btnloading}>
+          {btnloading ? (
+            <Spinner as="span" animation="border" role="status" />
+          ) : (
+            "Login"
+          )}
         </Button>
       </Form>
     </div>
