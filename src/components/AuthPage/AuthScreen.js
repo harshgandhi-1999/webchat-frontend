@@ -2,6 +2,7 @@ import React from "react";
 import "./authscreen.css";
 import { Card, Tabs, Tab } from "react-bootstrap";
 import LoginComponent from "./LoginComponent";
+import SignupComponent from "./SignupComponent";
 import "./authscreen.css";
 import { useAuth } from "../../context/AuthContext";
 // import blob1 from "../../assets/blob.svg";
@@ -22,7 +23,7 @@ const AuthScreen = () => {
                 <LoginComponent />
               </Tab>
               <Tab eventKey="signup" title="SIGNUP">
-                signup
+                <SignupComponent />
               </Tab>
             </Tabs>
           </Card.Body>
