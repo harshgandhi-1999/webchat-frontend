@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Label from "../FormLabel/Label";
+import axiosInstance from "../../utils/axios";
 
 const SignupComponent = () => {
   const [validated, setValidated] = useState(false);
@@ -20,6 +21,23 @@ const SignupComponent = () => {
         contact: phoneNo,
         password: password,
       });
+
+      axiosInstance
+        .post("/signup", requestBody)
+        .then((res) => {
+          alert(res.data.message + ". Please login to continue...");
+          event.target.username.value = "";
+          event.target.phoneNo.value = "";
+          event.target.password.value = "";
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response) {
+            alert(err.response.data.message);
+          } else {
+            alert(err.message);
+          }
+        });
 
       setValidated(false);
     }

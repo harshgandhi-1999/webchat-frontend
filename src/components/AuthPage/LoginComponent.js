@@ -26,7 +26,6 @@ const LoginComponent = () => {
       axiosInstance
         .post("/login", requestBody)
         .then((res) => {
-          console.log(res);
           setUser({ ...res.data.userInfo, token: res.data.token });
 
           event.target.phoneNo.value = "";
