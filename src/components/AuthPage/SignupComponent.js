@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
-import { useAuth } from "../../context/AuthContext";
 
-const LoginComponent = () => {
+const SignupComponent = () => {
   const [validated, setValidated] = useState(false);
-  const { setUser } = useAuth();
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -15,19 +12,21 @@ const LoginComponent = () => {
       setValidated(true);
       event.stopPropagation();
     } else {
+      const username = event.target.username.value.trim();
       const phoneNo = event.target.phoneNo.value.trim();
       const password = event.target.password.value.trim();
 
       const requestBody = JSON.stringify({
+        username: username,
         contact: phoneNo,
         password: password,
       });
 
       axiosInstance
-        .post("/login", requestBody)
+        .post("/signup", requestBody)
         .then((res) => {
-          setUser({ ...res.data.userInfo, token: res.data.token });
-
+          alert(res.data.message + ". Please login to continue...");
+          event.target.username.value = "";
           event.target.phoneNo.value = "";
           event.target.password.value = "";
         })
@@ -39,12 +38,24 @@ const LoginComponent = () => {
             alert(err.message);
           }
         });
+
       setValidated(false);
     }
   };
   return (
     <div>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form.Group controlId="username">
+          <Label text="Username" />
+          <Form.Control
+            type="text"
+            placeholder="Enter your username"
+            required
+          />
+          <Form.Control.Feedback type="invalid">
+            Username is required
+          </Form.Control.Feedback>
+        </Form.Group>
         <Form.Group controlId="phoneNo">
           <Label text="Phone no." />
           <Form.Control
@@ -73,11 +84,11 @@ const LoginComponent = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Button type="submit" variant="success">
-          Login
+          Signup
         </Button>
       </Form>
     </div>
   );
 };
 
-export default LoginComponent;
+export default SignupComponent;
