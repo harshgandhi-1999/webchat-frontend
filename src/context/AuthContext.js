@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { toast } from "react-toastify";
 
 const AuthContext = React.createContext();
 
@@ -11,7 +12,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage("user", {});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    console.log(user);
     if (
       Object.keys(user).length !== 0 &&
       user !== null &&
@@ -24,6 +24,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setUser({});
     setIsLoggedIn(false);
+    toast.success("Logout Successfull");
   };
 
   return (

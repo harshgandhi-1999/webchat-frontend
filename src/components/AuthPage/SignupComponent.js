@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
+import { toast } from "react-toastify";
 
 const SignupComponent = () => {
   const [validated, setValidated] = useState(false);
+  const [btnloading, setBtnLoading] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -22,20 +25,32 @@ const SignupComponent = () => {
         password: password,
       });
 
+      setBtnLoading(true);
       axiosInstance
         .post("/signup", requestBody)
         .then((res) => {
-          alert(res.data.message + ". Please login to continue...");
+          toast.success(
+            `${res.data.message + ". Please login to continue..."}`,
+            {
+              toastId: "signup_success_toast",
+            }
+          );
           event.target.username.value = "";
           event.target.phoneNo.value = "";
           event.target.password.value = "";
+          setBtnLoading(false);
         })
         .catch((err) => {
           console.log(err);
+          setBtnLoading(false);
           if (err.response) {
-            alert(err.response.data.message);
+            toast.error(`${err.response.data.message}`, {
+              toastId: "signup_failed_toast",
+            });
           } else {
-            alert(err.message);
+            toast.error(`${err.message}`, {
+              className: "some_error_toast",
+            });
           }
         });
 
@@ -83,8 +98,12 @@ const SignupComponent = () => {
             Please provide a valid password
           </Form.Control.Feedback>
         </Form.Group>
-        <Button type="submit" variant="success">
-          Signup
+        <Button type="submit" variant="success" disabled={btnloading}>
+          {btnloading ? (
+            <Spinner as="span" animation="border" role="status" />
+          ) : (
+            "Signup"
+          )}
         </Button>
       </Form>
     </div>

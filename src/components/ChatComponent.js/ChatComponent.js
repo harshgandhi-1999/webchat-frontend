@@ -7,7 +7,6 @@ import { useConversations } from "../../context/ConversationContext";
 const ChatComponent = () => {
   // const [messages, setMessages] = useState([]);
   const { selectedConversation } = useConversations();
-  console.log(selectedConversation);
   return (
     <div className="w-50 d-flex flex-column justify-content-between">
       {(selectedConversation && (
