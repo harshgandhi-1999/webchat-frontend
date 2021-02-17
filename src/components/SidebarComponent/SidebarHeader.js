@@ -55,13 +55,10 @@ const SidebarHeader = ({ openDrawer }) => {
               type="text"
               placeholder="Enter contact no."
               required
-              pattern="^\d{3}$"
+              pattern="^[6-9][0-9]{9}"
             />
-            <Form.Text id="passwordHelpBlock" muted>
-              Your password must be a 3 digit number
-            </Form.Text>
             <Form.Control.Feedback type="invalid">
-              Please provide a valid passsword
+              Please provide a valid contactNo.
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="name">

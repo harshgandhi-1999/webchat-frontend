@@ -27,16 +27,12 @@ export function ConversationsProvider({ children }) {
 
   //using contact context and user context
   // const { contacts } = useContacts();
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const { socket } = useSocket();
 
   const formattedConversations = conversations.map((conversation, index) => {
     //for messages
     const messages = conversation.messages.map((message) => {
-      // const contact = contacts.find((c) => {
-      //   return c.contactNo === message.sender.contactNo;
-      // });
-      // const name = (contact && contact.name) || message.sender.contactNo;
       const fromMe = user.contactNo === message.sender.contactNo;
       return { ...message, fromMe };
     });
@@ -82,17 +78,38 @@ export function ConversationsProvider({ children }) {
 
   const sendMessage = (messageBody) => {
     socket.emit("send-message", messageBody);
-    addMessageToConversation({ ...messageBody, sender: user });
+    addMessageToConversation({
+      ...messageBody,
+      sender: { contactNo: user.contactNo },
+    });
     setSelectedConversation((prevSelected) => {
       return {
         ...prevSelected,
         messages: [
           ...prevSelected.messages,
-          { ...messageBody, fromMe: true, sender: user },
+          {
+            ...messageBody,
+            fromMe: true,
+            sender: { contactNo: user.contactNo },
+          },
         ],
       };
     });
   };
+
+  //effect for not logged in
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      setConversations([]);
+      setSelectedConversation(null);
+      setSelectedConversationIndex(null);
+    }
+  }, [
+    isLoggedIn,
+    setConversations,
+    setSelectedConversationIndex,
+    setSelectedConversation,
+  ]);
 
   // effect for recieving message
   useEffect(() => {
@@ -118,11 +135,10 @@ export function ConversationsProvider({ children }) {
     return () => socket.off("recieve-message");
   }, [socket, addMessageToConversation, selectedConversation]);
 
-  // console.log(selectedConversation);
+  console.log(selectedConversation);
   // console.log(formattedConversations[selectedConversationIndex]);
   useEffect(() => {
     if (selectedConversationIndex !== null) {
-      console.log("sdiskdnjsdn");
       setSelectedConversation(
         formattedConversations[selectedConversationIndex]
       );

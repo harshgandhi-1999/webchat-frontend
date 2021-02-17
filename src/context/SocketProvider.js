@@ -9,19 +9,21 @@ export function useSocket() {
 }
 
 export function SocketProvider({ children }) {
-  const [socket, setSocket] = useState();
+  const [socket, setSocket] = useState(null);
 
-  const { user } = useAuth();
+  const { isLoggedIn, user } = useAuth();
 
   useEffect(() => {
-    if (Object.keys(user).length !== 0 && user !== null) {
+    if (isLoggedIn === true) {
       const newSocket = io("http://localhost:8000", {
-        query: { contactNo: user.contactNo, name: user.username },
+        query: { contactNo: user.contactNo, username: user.username },
       });
       setSocket(newSocket);
       return () => newSocket.close();
+    } else {
+      setSocket(null);
     }
-  }, [user]);
+  }, [user, isLoggedIn]);
 
   return (
     <SocketContext.Provider value={{ socket: socket }}>
