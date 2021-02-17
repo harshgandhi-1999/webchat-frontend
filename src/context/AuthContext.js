@@ -11,6 +11,14 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [user, setUser] = useLocalStorage("user", {});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const logout = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    toast.success("Logout Successfull");
+    setUser({});
+  };
+
   useEffect(() => {
     if (
       Object.keys(user).length !== 0 &&
@@ -20,12 +28,6 @@ export function AuthProvider({ children }) {
       setIsLoggedIn(true);
     }
   }, [user]);
-
-  const logout = () => {
-    setUser({});
-    setIsLoggedIn(false);
-    toast.success("Logout Successfull");
-  };
 
   return (
     <AuthContext.Provider

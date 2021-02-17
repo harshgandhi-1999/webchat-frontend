@@ -1,4 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const ContactsContext = React.createContext({
@@ -12,18 +13,19 @@ export function useContacts() {
 
 export function ContactsProvider({ children }) {
   const [contacts, setContacts] = useLocalStorage("contacts", []);
-  // const [selectedContactIndex, setSelectedContactIndex] = useState(null);
 
   const createContact = (contactNo, name) => {
     setContacts((prevContacts) => {
       return [...prevContacts, { contactNo, name }];
     });
   };
+  const { isLoggedIn } = useAuth();
 
-  // const handleSelectContact = (index) => {
-  //   console.log(index);
-  //   setSelectedContactIndex(index);
-  // };
+  useEffect(() => {
+    if (isLoggedIn === false) {
+      setContacts([]);
+    }
+  }, [isLoggedIn, setContacts]);
 
   // console.log(contacts);
   return (
@@ -31,8 +33,6 @@ export function ContactsProvider({ children }) {
       value={{
         contacts: contacts,
         createContact: createContact,
-        // selectedContact: contacts[selectedContactIndex],
-        // handleSelectContact: handleSelectContact,
       }}
     >
       {children}

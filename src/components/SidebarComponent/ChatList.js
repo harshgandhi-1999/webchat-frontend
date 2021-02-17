@@ -15,7 +15,8 @@ const ChatList = () => {
             key={index}
             onClick={() => selectConversationIndex(index)}
           >
-            {conversation.recipient.recipientName}
+            {conversation.recipient.recipientName ||
+              conversation.recipient.recipientNo}
           </ListGroup.Item>
         );
       })}

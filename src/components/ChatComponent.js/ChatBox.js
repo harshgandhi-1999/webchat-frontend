@@ -23,7 +23,7 @@ const ChatBox = () => {
               key={index}
               text={item.message}
               fromMe={item.fromMe}
-              sender={item.sender}
+              recipient={item.recipient}
             />
           );
         })}
