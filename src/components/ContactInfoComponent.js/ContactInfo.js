@@ -1,6 +1,6 @@
 import React from "react";
 import contactImage from "../../assets/contactImage.png";
-import { useConversations } from "../../context/ConversationContext";
+import { useConversations } from "../../context/ConversationProvider";
 import "./contactinfo.css";
 
 const ContactInfo = () => {

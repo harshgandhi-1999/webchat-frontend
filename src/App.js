@@ -1,9 +1,9 @@
 import React from "react";
 import "./app.css";
 import Content from "./components/Content/Content";
-import { ContactsProvider } from "./context/ContactContext";
-import { ConversationsProvider } from "./context/ConversationContext";
-import { AuthProvider } from "./context/AuthContext";
+import { ContactsProvider } from "./context/ContactProvider";
+import { ConversationsProvider } from "./context/ConversationProvider";
+import { AuthProvider } from "./context/AuthProvider";
 import { SocketProvider } from "./context/SocketProvider";
 import AuthScreen from "./components/AuthPage/AuthScreen";
 import { ToastContainer, Flip } from "react-toastify";

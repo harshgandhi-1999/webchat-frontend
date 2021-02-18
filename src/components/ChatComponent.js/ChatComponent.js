@@ -2,7 +2,7 @@ import React from "react";
 import ChatBoxHeader from "./ChatBoxHeader";
 import ChatBox from "./ChatBox";
 import SendMessageForm from "./SendMessageForm";
-import { useConversations } from "../../context/ConversationContext";
+import { useConversations } from "../../context/ConversationProvider";
 
 const ChatComponent = () => {
   // const [messages, setMessages] = useState([]);

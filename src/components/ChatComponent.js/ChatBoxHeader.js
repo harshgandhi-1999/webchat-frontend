@@ -1,5 +1,5 @@
 import React from "react";
-import { useConversations } from "../../context/ConversationContext";
+import { useConversations } from "../../context/ConversationProvider";
 import "./chatcomponent.css";
 
 const ChatBoxHeader = () => {

@@ -4,7 +4,7 @@ import { Card, Tabs, Tab } from "react-bootstrap";
 import LoginComponent from "./LoginComponent";
 import SignupComponent from "./SignupComponent";
 import "./authscreen.css";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthProvider";
 // import blob1 from "../../assets/blob.svg";
 // import { motion } from "framer-motion";
 

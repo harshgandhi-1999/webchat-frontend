@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./AuthProvider";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 const ContactsContext = React.createContext({
@@ -19,13 +19,18 @@ export function ContactsProvider({ children }) {
       return [...prevContacts, { contactNo, name }];
     });
   };
-  const { isLoggedIn } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
-    if (isLoggedIn === false) {
+    if (
+      Object.keys(user).length === 0 ||
+      user === null ||
+      user.token === null ||
+      user.token === ""
+    ) {
       setContacts([]);
     }
-  }, [isLoggedIn, setContacts]);
+  }, [user, setContacts]);
 
   // console.log(contacts);
   return (

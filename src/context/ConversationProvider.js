@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./AuthProvider";
 import { useSocket } from "./SocketProvider";
+import { useContacts } from "./ContactProvider";
 
 const ConversationsContext = React.createContext({
   conversations: [],
-  createConversation: (recipientNo) => {},
-  sendMessage: (recipientNo, message, timestamp, fromMe) => {},
+  createConversation: () => {},
+  sendMessage: () => {},
   selectedConversation: {},
   selectConversationIndex: () => {},
 });
@@ -26,8 +27,8 @@ export function ConversationsProvider({ children }) {
   );
 
   //using contact context and user context
-  // const { contacts } = useContacts();
-  const { user, isLoggedIn } = useAuth();
+  const { contacts } = useContacts();
+  const { user } = useAuth();
   const { socket } = useSocket();
 
   const formattedConversations = conversations.map((conversation, index) => {
@@ -99,13 +100,18 @@ export function ConversationsProvider({ children }) {
 
   //effect for not logged in
   useEffect(() => {
-    if (isLoggedIn === false) {
+    if (
+      Object.keys(user).length === 0 ||
+      user === null ||
+      user.token === null ||
+      user.token === ""
+    ) {
       setConversations([]);
       setSelectedConversation(null);
       setSelectedConversationIndex(null);
     }
   }, [
-    isLoggedIn,
+    user,
     setConversations,
     setSelectedConversationIndex,
     setSelectedConversation,
@@ -115,28 +121,41 @@ export function ConversationsProvider({ children }) {
   useEffect(() => {
     if (socket == null) return;
 
-    socket.on("recieve-message", (message) => {
-      console.log(message);
-      addMessageToConversation(message);
+    socket.on("recieve-message", async (message) => {
+      console.log("message = ", message);
+      let newMessage = { ...message };
+      //check if recipient already exist in contact
+      const contact = await contacts.find(
+        (el) => el.contactNo === message.recipient.recipientNo
+      );
+      //then update message
+      if (contact) {
+        newMessage = {
+          ...message,
+          recipient: { ...message.recipient, recipientName: contact.name },
+        };
+      }
+      addMessageToConversation(newMessage);
       if (
         selectedConversation &&
         selectedConversation.recipient.recipientNo ===
-          message.recipient.recipientNo
+          newMessage.recipient.recipientNo
       ) {
         setSelectedConversation((prevSelected) => {
           return {
             ...prevSelected,
-            messages: [...prevSelected.messages, { ...message, fromMe: false }],
+            messages: [
+              ...prevSelected.messages,
+              { ...newMessage, fromMe: false },
+            ],
           };
         });
       }
     });
 
     return () => socket.off("recieve-message");
-  }, [socket, addMessageToConversation, selectedConversation]);
+  }, [socket, addMessageToConversation, selectedConversation, contacts]);
 
-  console.log(selectedConversation);
-  // console.log(formattedConversations[selectedConversationIndex]);
   useEffect(() => {
     if (selectedConversationIndex !== null) {
       setSelectedConversation(

@@ -3,7 +3,7 @@ import SidebarComponent from "../SidebarComponent/SidebarComponent";
 import ChatComponent from "../ChatComponent.js/ChatComponent";
 import ContactInfo from "../ContactInfoComponent.js/ContactInfo";
 import SideDrawer from "../SideDrawer/SideDrawer";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthProvider";
 import "./content.css";
 
 const Content = () => {

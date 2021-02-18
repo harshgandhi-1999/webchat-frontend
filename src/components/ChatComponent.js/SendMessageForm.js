@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { Form, Button } from "react-bootstrap";
-import { useConversations } from "../../context/ConversationContext";
+import { useConversations } from "../../context/ConversationProvider";
 
 const SendMessageForm = () => {
   const { sendMessage, selectedConversation } = useConversations();

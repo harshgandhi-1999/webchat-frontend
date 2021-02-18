@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import SearchComponent from "../SearchComponent/SearchComponent";
-import { useContacts } from "../../context/ContactContext";
-import { useConversations } from "../../context/ConversationContext";
+import { useContacts } from "../../context/ContactProvider";
+import { useConversations } from "../../context/ConversationProvider";
 import "./sidedrawer.css";
 
 const variants = {

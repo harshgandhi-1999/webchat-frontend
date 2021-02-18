@@ -1,6 +1,6 @@
 import React from "react";
 import { ListGroup } from "react-bootstrap";
-import { useConversations } from "../../context/ConversationContext";
+import { useConversations } from "../../context/ConversationProvider";
 
 const ChatList = () => {
   const { conversations, selectConversationIndex } = useConversations();

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthProvider";
 import { toast } from "react-toastify";
 
 const LoginComponent = () => {

@@ -4,7 +4,7 @@ import { faUserCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import AddContactModal from "../AddContactModal.js/AddContactModal";
 import { Button, Form } from "react-bootstrap";
-import { useContacts } from "../../context/ContactContext";
+import { useContacts } from "../../context/ContactProvider";
 
 const RedAsterisk = () => {
   return <span style={{ color: "red" }}>*</span>;

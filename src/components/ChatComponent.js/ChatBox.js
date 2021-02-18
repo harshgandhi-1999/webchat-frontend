@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import MessageComponent from "./MessageComponent";
 import "./chatlistscrollbar.css";
-import { useConversations } from "../../context/ConversationContext";
+import { useConversations } from "../../context/ConversationProvider";
 
 const ChatBox = () => {
   const { selectedConversation } = useConversations();

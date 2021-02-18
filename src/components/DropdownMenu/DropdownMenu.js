@@ -2,7 +2,7 @@ import React from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthProvider";
 import "./menuStyle.css";
 
 const DropdownMenu = ({ handleOpen }) => {
