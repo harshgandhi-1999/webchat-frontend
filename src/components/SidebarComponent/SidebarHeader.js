@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import AddContactModal from "../AddContactModal.js/AddContactModal";
-import { Button, Form } from "react-bootstrap";
+import Label from "../FormLabel/Label";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { Button, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { useContacts } from "../../context/ContactProvider";
-
-const RedAsterisk = () => {
-  return <span style={{ color: "red" }}>*</span>;
-};
 
 const SidebarHeader = ({ openDrawer }) => {
   const [showContactModal, setShowContactModal] = useState(false);
@@ -47,10 +44,7 @@ const SidebarHeader = ({ openDrawer }) => {
       >
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group controlId="contactNo">
-            <Form.Label>
-              Contact No.
-              <RedAsterisk />
-            </Form.Label>
+            <Label text="Contact No" />
             <Form.Control
               type="text"
               placeholder="Enter contact no."
@@ -62,10 +56,7 @@ const SidebarHeader = ({ openDrawer }) => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="name">
-            <Form.Label>
-              Name
-              <RedAsterisk />
-            </Form.Label>
+            <Label text="Name" />
             <Form.Control type="text" placeholder="Enter name" required />
             <Form.Control.Feedback type="invalid">
               Please provide a valid name
@@ -88,22 +79,38 @@ const SidebarHeader = ({ openDrawer }) => {
         </Form>
       </AddContactModal>
       <div className="sidebar-header d-flex flex-row justify-content-between mb-2">
-        <div className="user-profile">
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            color="white"
-            style={{ fontSize: "2rem" }}
-          />
-        </div>
-        <div className="user-actions d-flex flex-row justify-content-between align-items-center">
-          <div className="new-chat-btn mr-2">
-            <Button variant="none" onClick={openDrawer}>
+        <div className="user-profile-btn">
+          <OverlayTrigger
+            placement="top"
+            overlay={<Tooltip id="profile-tooltip">Profile</Tooltip>}
+          >
+            <Button variant="none" style={{ padding: "0" }}>
               <FontAwesomeIcon
-                icon={faPlusCircle}
+                icon={faUserCircle}
                 color="white"
-                style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                style={{ fontSize: "2rem" }}
               />
             </Button>
+          </OverlayTrigger>
+        </div>
+        <div className="user-actions d-flex flex-row justify-content-between align-items-center">
+          <div className="new-chat-btn mr-3">
+            <OverlayTrigger
+              placement="top"
+              overlay={<Tooltip id="new-chat-tooltip">New Chat</Tooltip>}
+            >
+              <Button
+                variant="none"
+                onClick={openDrawer}
+                style={{ padding: "0" }}
+              >
+                <FontAwesomeIcon
+                  icon={faPlusCircle}
+                  color="white"
+                  style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                />
+              </Button>
+            </OverlayTrigger>
           </div>
           <DropdownMenu handleOpen={handleOpen} />
         </div>

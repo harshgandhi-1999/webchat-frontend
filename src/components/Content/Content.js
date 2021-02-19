@@ -4,11 +4,13 @@ import ChatComponent from "../ChatComponent.js/ChatComponent";
 import ContactInfo from "../ContactInfoComponent.js/ContactInfo";
 import SideDrawer from "../SideDrawer/SideDrawer";
 import { useAuth } from "../../context/AuthProvider";
+import { useConversations } from "../../context/ConversationProvider";
 import "./content.css";
 
 const Content = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const { isLoggedIn } = useAuth();
+  const { selectedConversation } = useConversations();
 
   const closeDrawer = () => setShowDrawer(false);
   const openDrawer = () => setShowDrawer(true);
@@ -30,7 +32,7 @@ const Content = () => {
           />
           <SidebarComponent openDrawer={openDrawer} />
           <ChatComponent />
-          <ContactInfo />
+          {selectedConversation ? <ContactInfo /> : <></>}
         </div>
       </div>
     );

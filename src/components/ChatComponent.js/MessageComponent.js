@@ -1,7 +1,6 @@
 import React from "react";
 
 const MessageComponent = ({ refprop, text, fromMe, recipient }) => {
-  console.log(recipient);
   return (
     <div
       ref={refprop}
