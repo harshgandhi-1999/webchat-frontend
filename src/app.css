@@ -1,10 +1,10 @@
-.App{
-    height: 100vh;
-    /* background-color: #eaeaea; */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
+.App {
+  height: 100vh;
+  background-color: #eaeaea;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
 }
 /* 
 .App svg{

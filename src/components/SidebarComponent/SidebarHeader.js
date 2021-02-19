@@ -1,15 +1,29 @@
 import React, { useState } from "react";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
-import AddContactModal from "../AddContactModal.js/AddContactModal";
+import AddContactModal from "../AddContactModal/AddContactModal";
 import Label from "../FormLabel/Label";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import { Button, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  Tooltip,
+  OverlayTrigger,
+  Dropdown,
+} from "react-bootstrap";
 import { useContacts } from "../../context/ContactProvider";
+import { useAuth } from "../../context/AuthProvider";
+import { toast } from "react-toastify";
+
+function Capitalize(s) {
+  if (typeof s !== "string") return "";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 const SidebarHeader = ({ openDrawer }) => {
   const [showContactModal, setShowContactModal] = useState(false);
   const { contacts, createContact } = useContacts();
+  const { logout } = useAuth();
   const [validated, setValidated] = useState(false);
 
   const handleClose = () => setShowContactModal(false);
@@ -23,13 +37,14 @@ const SidebarHeader = ({ openDrawer }) => {
       event.stopPropagation();
     } else {
       const contactNo = event.target.contactNo.value.trim();
-      const name = event.target.name.value.trim();
+      const name = Capitalize(event.target.name.value.trim());
       let alreadyThere = contacts.some((el) => el.contactNo === contactNo);
       if (alreadyThere === true) {
         alert("This contact no. already exist");
       } else {
         handleClose();
         createContact(contactNo, name);
+        toast.success("Contact Added");
         setValidated(false);
       }
     }
@@ -112,7 +127,10 @@ const SidebarHeader = ({ openDrawer }) => {
               </Button>
             </OverlayTrigger>
           </div>
-          <DropdownMenu handleOpen={handleOpen} />
+          <DropdownMenu color="white" size="1.5rem" tooltipText="Menu">
+            <Dropdown.Item onClick={handleOpen}>Add Contact</Dropdown.Item>
+            <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
+          </DropdownMenu>
         </div>
       </div>
     </React.Fragment>

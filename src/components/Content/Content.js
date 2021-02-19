@@ -18,8 +18,8 @@ const Content = () => {
   if (isLoggedIn) {
     return (
       <div className="content-style bg-white d-flex flex-column overflow-hidden">
-        <div className="chatapp-title bg-primary py-1 text-xl text-white font-bold text-center">
-          WebChat
+        <div className="chatapp-title bg-primary py-1 text-xl text-white font-weight-bolder text-center">
+          WEBCHAT
         </div>
         <div
           className="d-flex flex-row flex-grow-1"
