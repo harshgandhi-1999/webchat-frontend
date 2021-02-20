@@ -1,7 +1,6 @@
 import React from "react";
 
 const MessageComponent = ({ refprop, text, fromMe, recipient }) => {
-  console.log(recipient);
   return (
     <div
       ref={refprop}
@@ -24,9 +23,9 @@ const MessageComponent = ({ refprop, text, fromMe, recipient }) => {
             }
       }
     >
-      <h6>
+      <div className="sender-name font-weight-bolder">
         {fromMe ? "You" : recipient.recipientName || recipient.recipientNo}
-      </h6>
+      </div>
       <p className="text-break mb-0">{text}</p>
     </div>
   );

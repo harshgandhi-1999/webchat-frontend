@@ -13,13 +13,25 @@ export function useContacts() {
 
 export function ContactsProvider({ children }) {
   const [contacts, setContacts] = useLocalStorage("contacts", []);
+  const { user } = useAuth();
 
   const createContact = (contactNo, name) => {
     setContacts((prevContacts) => {
       return [...prevContacts, { contactNo, name }];
     });
   };
-  const { user } = useAuth();
+
+  const updateContact = (contactNo, name) => {
+    setContacts((prevContacts) => {
+      const newContacts = prevContacts.map((contact) => {
+        if (contact.contactNo === contactNo) {
+          return { ...contact, name: name };
+        }
+        return contact;
+      });
+      return newContacts;
+    });
+  };
 
   useEffect(() => {
     if (
@@ -38,6 +50,7 @@ export function ContactsProvider({ children }) {
       value={{
         contacts: contacts,
         createContact: createContact,
+        updateContact: updateContact,
       }}
     >
       {children}

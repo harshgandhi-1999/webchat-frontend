@@ -8,19 +8,17 @@ const ChatComponent = () => {
   // const [messages, setMessages] = useState([]);
   const { selectedConversation } = useConversations();
   return (
-    <div className="w-50 d-flex flex-column justify-content-between">
-      {(selectedConversation && (
-        <>
-          <ChatBoxHeader />
-          <ChatBox />
-          <SendMessageForm />
-        </>
-      )) || (
-        <div className="align-self-center">
-          Please a select a conversation to chat...
-        </div>
-      )}
-    </div>
+    (selectedConversation && (
+      <div className="w-50 d-flex flex-column justify-content-between">
+        <ChatBoxHeader />
+        <ChatBox />
+        <SendMessageForm />
+      </div>
+    )) || (
+      <div className="w-75 d-flex flex-column justify-content-center text-center">
+        <h3>Please a select a conversation to chat...</h3>
+      </div>
+    )
   );
 };
 

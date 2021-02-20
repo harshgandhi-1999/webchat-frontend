@@ -4,11 +4,13 @@ import ChatComponent from "../ChatComponent.js/ChatComponent";
 import ContactInfo from "../ContactInfoComponent.js/ContactInfo";
 import SideDrawer from "../SideDrawer/SideDrawer";
 import { useAuth } from "../../context/AuthProvider";
+import { useConversations } from "../../context/ConversationProvider";
 import "./content.css";
 
 const Content = () => {
   const [showDrawer, setShowDrawer] = useState(false);
   const { isLoggedIn } = useAuth();
+  const { selectedConversation } = useConversations();
 
   const closeDrawer = () => setShowDrawer(false);
   const openDrawer = () => setShowDrawer(true);
@@ -16,8 +18,8 @@ const Content = () => {
   if (isLoggedIn) {
     return (
       <div className="content-style bg-white d-flex flex-column overflow-hidden">
-        <div className="chatapp-title bg-primary py-1 text-xl text-white font-bold text-center">
-          WebChat
+        <div className="chatapp-title bg-primary py-1 text-xl text-white font-weight-bolder text-center">
+          WEBCHAT
         </div>
         <div
           className="d-flex flex-row flex-grow-1"
@@ -30,7 +32,7 @@ const Content = () => {
           />
           <SidebarComponent openDrawer={openDrawer} />
           <ChatComponent />
-          <ContactInfo />
+          {selectedConversation ? <ContactInfo /> : <></>}
         </div>
       </div>
     );

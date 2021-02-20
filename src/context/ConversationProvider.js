@@ -10,6 +10,8 @@ const ConversationsContext = React.createContext({
   sendMessage: () => {},
   selectedConversation: {},
   selectConversationIndex: () => {},
+  setSelectedConversation: () => {},
+  updateNameInConversation: () => {},
 });
 
 export function useConversations() {
@@ -48,7 +50,6 @@ export function ConversationsProvider({ children }) {
     cb();
   };
 
-  // console.log(formattedConversations);
   const addMessageToConversation = useCallback(
     (newMessage) => {
       setConversations((prevConversations) => {
@@ -95,6 +96,23 @@ export function ConversationsProvider({ children }) {
           },
         ],
       };
+    });
+  };
+
+  console.log("all conversations", conversations);
+  console.log("selected", selectedConversation);
+  const updateNameInConversation = (number, name, updatedMessages) => {
+    setConversations((prevConvo) => {
+      return prevConvo.map((convo) => {
+        if (convo.recipient.recipientNo === number) {
+          return {
+            ...convo,
+            recipient: { ...convo.recipient, recipientName: name },
+            messages: updatedMessages,
+          };
+        }
+        return convo;
+      });
     });
   };
 
@@ -164,11 +182,13 @@ export function ConversationsProvider({ children }) {
     }
   }, [selectedConversationIndex]);
 
+  // console.log(selectedConversation);
   return (
     <ConversationsContext.Provider
       value={{
         conversations: formattedConversations,
         createConversation,
+        updateNameInConversation,
         sendMessage,
         selectedConversation: selectedConversation,
         setSelectedConversation: setSelectedConversation,
