@@ -1,54 +1,17 @@
 import React, { useState } from "react";
 import DropdownMenu from "../DropdownMenu/DropdownMenu";
 import AddContactModal from "../AddContactModal/AddContactModal";
-import Label from "../FormLabel/Label";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import {
-  Button,
-  Form,
-  Tooltip,
-  OverlayTrigger,
-  Dropdown,
-} from "react-bootstrap";
-import { useContacts } from "../../context/ContactProvider";
+import { Button, Tooltip, OverlayTrigger, Dropdown } from "react-bootstrap";
 import { useAuth } from "../../context/AuthProvider";
-import { toast } from "react-toastify";
-
-function Capitalize(s) {
-  if (typeof s !== "string") return "";
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
 
 const SidebarHeader = ({ openDrawer }) => {
   const [showContactModal, setShowContactModal] = useState(false);
-  const { contacts, createContact } = useContacts();
   const { logout } = useAuth();
-  const [validated, setValidated] = useState(false);
 
   const handleClose = () => setShowContactModal(false);
   const handleOpen = () => setShowContactModal(true);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      setValidated(true);
-      event.stopPropagation();
-    } else {
-      const contactNo = event.target.contactNo.value.trim();
-      const name = Capitalize(event.target.name.value.trim());
-      let alreadyThere = contacts.some((el) => el.contactNo === contactNo);
-      if (alreadyThere === true) {
-        alert("This contact no. already exist");
-      } else {
-        handleClose();
-        createContact(contactNo, name);
-        toast.success("Contact Added");
-        setValidated(false);
-      }
-    }
-  };
 
   return (
     <React.Fragment>
@@ -56,43 +19,9 @@ const SidebarHeader = ({ openDrawer }) => {
         show={showContactModal}
         handleClose={handleClose}
         title="ADD CONTACT"
-      >
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <Form.Group controlId="contactNo">
-            <Label text="Contact No" />
-            <Form.Control
-              type="text"
-              placeholder="Enter contact no."
-              required
-              pattern="^[6-9][0-9]{9}"
-            />
-            <Form.Control.Feedback type="invalid">
-              Please provide a valid contactNo.
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="name">
-            <Label text="Name" />
-            <Form.Control type="text" placeholder="Enter name" required />
-            <Form.Control.Feedback type="invalid">
-              Please provide a valid name
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Button
-            type="submit"
-            variant="success"
-            style={{ float: "right", marginLeft: "0.5rem" }}
-          >
-            ADD
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={handleClose}
-            style={{ float: "right" }}
-          >
-            Cancel
-          </Button>
-        </Form>
-      </AddContactModal>
+        addName={false}
+      />
+
       <div className="sidebar-header d-flex flex-row justify-content-between mb-2">
         <div className="user-profile-btn">
           <OverlayTrigger
@@ -128,7 +57,7 @@ const SidebarHeader = ({ openDrawer }) => {
             </OverlayTrigger>
           </div>
           <DropdownMenu color="white" size="1.5rem" tooltipText="Menu">
-            <Dropdown.Item onClick={handleOpen}>Add Contact</Dropdown.Item>
+            <Dropdown.Item onClick={handleOpen}>Add New Contact</Dropdown.Item>
             <Dropdown.Item onClick={logout}>Logout</Dropdown.Item>
           </DropdownMenu>
         </div>
