@@ -1,11 +1,8 @@
 import React from "react";
-import { Button, ListGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import SearchComponent from "../SearchComponent/SearchComponent";
-import { useContacts } from "../../context/ContactProvider";
-import { useConversations } from "../../context/ConversationProvider";
 import "./sidedrawer.css";
 
 const variants = {
@@ -13,35 +10,7 @@ const variants = {
   closed: { x: "-100%" },
 };
 
-const SideDrawer = ({ show, title, closeDrawer }) => {
-  const { contacts } = useContacts();
-  const {
-    conversations,
-    selectConversationIndex,
-    createConversation,
-  } = useConversations();
-
-  const handleSelect = (contactNo, contactName, index) => {
-    //checking if selected contact is already present in conversations list
-    const clickedItemIndex = conversations.findIndex(
-      (el) => el.recipient.recipientNo === contactNo
-    );
-
-    if (clickedItemIndex !== -1) {
-      //means that it is already present in conversation list then select that index
-      selectConversationIndex(clickedItemIndex);
-    } else {
-      //means not present, so create new conversation on select with no messages
-      const recipient = {
-        recipientNo: contactNo,
-        recipientName: contactName,
-      };
-      createConversation(recipient, () =>
-        selectConversationIndex(conversations.length)
-      );
-    }
-  };
-
+const SideDrawer = ({ show, title, closeDrawer, children }) => {
   return (
     <motion.div
       className="side-drawer d-flex flex-column shadow-sm"
@@ -62,26 +31,7 @@ const SideDrawer = ({ show, title, closeDrawer }) => {
         </div>
       </div>
       <div className="side-drawer-body d-flex flex-column overflow-hidden">
-        <div className="search-contacts p-2">
-          <SearchComponent />
-        </div>
-        <div className="all-contacts-list flex-grow-1 overflow-auto">
-          <ListGroup style={{ background: "transparent" }}>
-            {contacts.map((contact, index) => {
-              return (
-                <ListGroup.Item
-                  className="user-select-none"
-                  key={contact.contactNo}
-                  onClick={() =>
-                    handleSelect(contact.contactNo, contact.name, index)
-                  }
-                >
-                  {contact.name || contact.contactNo}
-                </ListGroup.Item>
-              );
-            })}
-          </ListGroup>
-        </div>
+        {children}
       </div>
     </motion.div>
   );
