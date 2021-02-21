@@ -28,7 +28,11 @@ const SidebarHeader = ({ openDrawer }) => {
             placement="top"
             overlay={<Tooltip id="profile-tooltip">Profile</Tooltip>}
           >
-            <Button variant="none" style={{ padding: "0" }}>
+            <Button
+              variant="none"
+              style={{ padding: "0" }}
+              onClick={() => openDrawer("USER_PROFILE")}
+            >
               <FontAwesomeIcon
                 icon={faUserCircle}
                 color="white"
@@ -45,7 +49,7 @@ const SidebarHeader = ({ openDrawer }) => {
             >
               <Button
                 variant="none"
-                onClick={openDrawer}
+                onClick={() => openDrawer("ALL_CONTACTS")}
                 style={{ padding: "0" }}
               >
                 <FontAwesomeIcon

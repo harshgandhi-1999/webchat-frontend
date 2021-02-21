@@ -2,18 +2,25 @@ import React, { useState } from "react";
 import SidebarComponent from "../SidebarComponent/SidebarComponent";
 import ChatComponent from "../ChatComponent.js/ChatComponent";
 import ContactInfo from "../ContactInfoComponent.js/ContactInfo";
-import SideDrawer from "../SideDrawer/SideDrawer";
+import AllContactsList from "../AllContactsList/AllContactsList";
+import UserProfile from "../UserProfileComponent/UserProfile";
 import { useAuth } from "../../context/AuthProvider";
 import { useConversations } from "../../context/ConversationProvider";
 import "./content.css";
 
 const Content = () => {
   const [showDrawer, setShowDrawer] = useState(false);
+  const [drawerName, setDrawerName] = useState("");
   const { isLoggedIn } = useAuth();
   const { selectedConversation } = useConversations();
 
   const closeDrawer = () => setShowDrawer(false);
-  const openDrawer = () => setShowDrawer(true);
+  const openDrawer = (drawer) => {
+    if (typeof drawer === "string") {
+      setDrawerName(drawer);
+      setShowDrawer(true);
+    }
+  };
 
   if (isLoggedIn) {
     return (
@@ -25,11 +32,12 @@ const Content = () => {
           className="d-flex flex-row flex-grow-1"
           style={{ height: "90%", position: "relative" }}
         >
-          <SideDrawer
-            title="New Chat"
-            show={showDrawer}
-            closeDrawer={closeDrawer}
-          />
+          {drawerName === "ALL_CONTACTS" && (
+            <AllContactsList show={showDrawer} closeDrawer={closeDrawer} />
+          )}
+          {drawerName === "USER_PROFILE" && (
+            <UserProfile show={showDrawer} closeDrawer={closeDrawer} />
+          )}
           <SidebarComponent openDrawer={openDrawer} />
           <ChatComponent />
           {selectedConversation ? <ContactInfo /> : <></>}
