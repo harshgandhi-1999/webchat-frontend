@@ -99,8 +99,6 @@ export function ConversationsProvider({ children }) {
     });
   };
 
-  console.log("all conversations", conversations);
-  console.log("selected", selectedConversation);
   const updateNameInConversation = (number, name, updatedMessages) => {
     setConversations((prevConvo) => {
       return prevConvo.map((convo) => {

@@ -4,6 +4,8 @@ import { useContacts } from "../../context/ContactProvider";
 import { useConversations } from "../../context/ConversationProvider";
 import { toast } from "react-toastify";
 import Label from "../FormLabel/Label";
+import axiosInstance from "../../utils/axios";
+import { useAuth } from "../../context/AuthProvider";
 
 function Capitalize(s) {
   if (typeof s !== "string") return "";
@@ -13,6 +15,7 @@ function Capitalize(s) {
 const AddContactModal = ({ show, handleClose, title, addName, number }) => {
   const [validated, setValidated] = useState(false);
   const { contacts, createContact } = useContacts();
+  const { user, logout } = useAuth();
   const {
     setSelectedConversation,
     updateNameInConversation,
@@ -25,54 +28,85 @@ const AddContactModal = ({ show, handleClose, title, addName, number }) => {
       setValidated(true);
       event.stopPropagation();
     } else {
-      const contactNo = event.target.contactNo.value.trim();
       const name = Capitalize(event.target.name.value.trim());
-      let alreadyThere = contacts.some((el) => el.contactNo === contactNo);
-      if (alreadyThere === true) {
-        alert("This contact no. already exist");
+      let contactNo;
+      if (addName === true) {
+        contactNo = number;
       } else {
-        handleClose();
-        createContact(contactNo, name);
-        toast.success("Contact Added");
-        setValidated(false);
+        contactNo = event.target.contactNo.value.trim();
       }
+
+      //check if already there
+      const alreadyThere = contacts.some(
+        (el) => el.contactNo === contactNo || el.name === name
+      );
+      if (alreadyThere === true) {
+        toast.error("This contact already exists");
+      } else {
+        const requestBody = {
+          contactNo,
+          name,
+        };
+        addContactRequest(event, requestBody, contactNo, name);
+      }
+
+      setValidated(false);
     }
   };
 
-  const handleUpdate = (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      setValidated(true);
-      event.stopPropagation();
-    } else {
-      const name = Capitalize(event.target.name.value.trim());
-      createContact(number, name);
-      let updatedMessages = [];
-      setSelectedConversation((prevSelected) => {
-        updatedMessages = prevSelected.messages.map((item) => {
-          if (item.recipient.recipientNo === number) {
+  const addContactRequest = (event, requestBody, contactNo, name) => {
+    axiosInstance
+      .post(`/addContact/${user.userId}`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        createContact(contactNo, name);
+        toast.success("Contact Added");
+        event.target.name.value = "";
+
+        //if we have to add only name
+        if (addName === true) {
+          let updatedMessages = [];
+          setSelectedConversation((prevSelected) => {
+            updatedMessages = prevSelected.messages.map((item) => {
+              if (item.recipient.recipientNo === number) {
+                return {
+                  ...item,
+                  recipient: {
+                    ...item.recipient,
+                    recipientName: name,
+                  },
+                };
+              }
+              return item;
+            });
             return {
-              ...item,
-              recipient: {
-                ...item.recipient,
-                recipientName: name,
-              },
+              ...prevSelected,
+              recipient: { ...prevSelected.recipient, recipientName: name },
+              messages: updatedMessages,
             };
+          });
+          updateNameInConversation(number, name, updatedMessages);
+        } else {
+          event.target.contactNo.value = "";
+        }
+        handleClose();
+      })
+      .catch((err) => {
+        if (err.response) {
+          if (err.response.status === 401) {
+            logout();
+          } else {
+            toast.error(`${err.response.data.message}`);
           }
-          return item;
-        });
-        return {
-          ...prevSelected,
-          recipient: { ...prevSelected.recipient, recipientName: name },
-          messages: updatedMessages,
-        };
+        } else {
+          toast.error(`${err.message}`, {
+            className: "some_error_toast",
+          });
+        }
       });
-      updateNameInConversation(number, name, updatedMessages);
-      handleClose();
-      toast.success("Contact Added");
-      setValidated(false);
-    }
   };
 
   return (
@@ -88,11 +122,7 @@ const AddContactModal = ({ show, handleClose, title, addName, number }) => {
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form
-            noValidate
-            validated={validated}
-            onSubmit={addName === false ? handleSubmit : handleUpdate}
-          >
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
             {addName === false && (
               <Form.Group controlId="contactNo">
                 <Label text="Contact No" />
