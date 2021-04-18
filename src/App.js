@@ -28,6 +28,12 @@ function App() {
                 pauseOnFocusLoss={false}
                 transition={Flip}
               />
+              <div className="mobile-screen">
+                <h4>
+                  This application is not for mobile screen. Please open it on
+                  pc.
+                </h4>
+              </div>
               <div className="App position-relative">
                 <Content />
                 <AuthScreen />

@@ -15,7 +15,7 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     if (isLoggedIn === true) {
-      const newSocket = io("http://localhost:8000", {
+      const newSocket = io("https://webchatbackend.herokuapp.com/", {
         query: { contactNo: user.contactNo, username: user.username },
       });
       setSocket(newSocket);

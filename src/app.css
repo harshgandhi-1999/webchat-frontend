@@ -6,7 +6,25 @@
   justify-content: space-between;
   align-items: stretch;
 }
+
+.mobile-screen {
+  display: block;
+  text-align: center;
+  font-weight: 500;
+}
 /* 
 .App svg{
     display: block;
 } */
+
+@media screen and (max-width: 900px) {
+  .App {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 901px) {
+  .mobile-screen {
+    display: none;
+  }
+}
