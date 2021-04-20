@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import MessageComponent from "./MessageComponent";
 import "./chatlistscrollbar.css";
+import "./chatcomponent.css";
 import { useConversations } from "../../context/ConversationProvider";
 
 const ChatBox = () => {
@@ -12,6 +13,7 @@ const ChatBox = () => {
   }, []);
   return (
     <div className="message-list flex-grow-1 px-4 py-4 d-flex flex-column justify-content-start align-items-start overflow-auto">
+      <div className="message-date">DATE</div>
       {selectedConversation &&
         selectedConversation.messages &&
         selectedConversation.messages.map((item, index) => {
@@ -23,6 +25,8 @@ const ChatBox = () => {
               key={index}
               text={item.message}
               fromMe={item.fromMe}
+              date={item.date}
+              time={item.time}
               recipient={item.recipient}
             />
           );
