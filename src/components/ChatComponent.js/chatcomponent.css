@@ -1,4 +1,14 @@
-.chat-component-header{
-    font-size: 1.2rem;
-    font-weight: 500;
+.chat-component-header {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.message-date {
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: orange;
+  color: #fff;
 }

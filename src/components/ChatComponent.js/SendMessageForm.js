@@ -9,10 +9,16 @@ const SendMessageForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const date = new Date();
     if (e.target.userMessage.value.trim() !== "") {
       const messageBody = {
         message: e.target.userMessage.value.trim(),
-        timestamp: Date.now(),
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString("en-US", {
+          hour12: false,
+          hour: "numeric",
+          minute: "numeric",
+        }),
         recipient: selectedConversation.recipient,
       };
       sendMessage(messageBody);

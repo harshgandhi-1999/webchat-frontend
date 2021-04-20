@@ -1,6 +1,6 @@
 import React from "react";
 
-const MessageComponent = ({ refprop, text, fromMe, recipient }) => {
+const MessageComponent = ({ refprop, text, fromMe, date, time, recipient }) => {
   return (
     <div
       ref={refprop}
@@ -23,10 +23,32 @@ const MessageComponent = ({ refprop, text, fromMe, recipient }) => {
             }
       }
     >
-      <div className="sender-name font-weight-bolder">
+      {/* <div className="sender-name font-weight-bolder">
         {fromMe ? "You" : recipient.recipientName || recipient.recipientNo}
+      </div> */}
+      <p
+        className="message text-break mb-0"
+        // style={
+        //   fromMe
+        //     ? {
+        //         background: "var(--primary-dark)",
+        //       }
+        //     : {
+        //         background: "var(--primary-dark)",
+        //       }
+        // }
+      >
+        {text}
+      </p>
+      <div
+        className="message-time"
+        style={{
+          fontSize: "0.8rem",
+          float: "right",
+        }}
+      >
+        {time}
       </div>
-      <p className="text-break mb-0">{text}</p>
     </div>
   );
 };

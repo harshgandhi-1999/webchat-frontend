@@ -138,8 +138,16 @@ export function ConversationsProvider({ children }) {
     if (socket == null) return;
 
     socket.on("recieve-message", async (message) => {
-      console.log("message = ", message);
-      let newMessage = { ...message };
+      const date = new Date();
+      let newMessage = {
+        ...message,
+        date: date.toLocaleDateString(),
+        time: date.toLocaleTimeString("en-US", {
+          hour12: false,
+          hour: "numeric",
+          minute: "numeric",
+        }),
+      };
       //check if recipient already exist in contact
       const contact = await contacts.find(
         (el) => el.contactNo === message.recipient.recipientNo
@@ -147,7 +155,7 @@ export function ConversationsProvider({ children }) {
       //then update message
       if (contact) {
         newMessage = {
-          ...message,
+          ...newMessage,
           recipient: { ...message.recipient, recipientName: contact.name },
         };
       }
