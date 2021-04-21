@@ -12,3 +12,16 @@
   background: orange;
   color: #fff;
 }
+
+.send-message-container {
+  background-color: var(--very-light-gray);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.5rem 0.5rem;
+}
+
+.emoji-mart {
+  width: 100% !important;
+}

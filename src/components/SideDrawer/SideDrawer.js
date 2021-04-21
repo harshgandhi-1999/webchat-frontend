@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import "./sidedrawer.css";
 
 const variants = {
-  open: { x: "0%" },
-  closed: { x: "-100%" },
+  open: { x: "0%", opacity: 1 },
+  closed: { x: "-100%", opacity: 0 },
 };
 
 const SideDrawer = ({ show, title, closeDrawer, children }) => {
