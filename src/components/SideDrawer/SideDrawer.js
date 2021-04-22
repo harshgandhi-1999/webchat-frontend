@@ -16,6 +16,7 @@ const SideDrawer = ({ show, title, closeDrawer, children }) => {
       className="side-drawer d-flex flex-column shadow-sm"
       initial={{ x: "-100%" }}
       animate={show ? "open" : "closed"}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       variants={variants}
     >
       <div className="side-drawer-header bg-primary text-white">

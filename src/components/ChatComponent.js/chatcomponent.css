@@ -25,3 +25,12 @@
 .emoji-mart {
   width: 100% !important;
 }
+
+textarea {
+  border: none !important;
+}
+
+textarea:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSmile,
@@ -12,21 +12,22 @@ import { motion } from "framer-motion";
 import "./chatcomponent.css";
 
 const variants = {
-  open: { y: "0%", opacity: 1 },
-  closed: { y: "100%", opacity: 0 },
+  open: { y: "0%", opacity: 1, display: "block" },
+  closed: { y: "100%", opacity: 0, display: "none" },
 };
 
 const SendMessageForm = () => {
   const { sendMessage, selectedConversation } = useConversations();
   const [text, setText] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const textRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (text.trim() !== "") {
       const date = new Date();
       const messageBody = {
-        message: e.target.userMessage.value.trim(),
+        message: text.trim(),
         date: date.toLocaleDateString(),
         time: date.toLocaleTimeString("en-US", {
           hour12: false,
@@ -37,36 +38,55 @@ const SendMessageForm = () => {
       };
       sendMessage(messageBody);
       setText("");
+      textRef.current.style.height = "36px";
     }
   };
 
-  const handleInputChange = ({ target: { value } }) => setText(value);
+  const submitOnEnter = (e) => {
+    if (e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    textRef.current.style.height = "36px";
+    textRef.current.style.height = `${e.target.scrollHeight}px`;
+    console.log(textRef.current.style.height);
+    setText(value);
+  };
   const addEmoji = (e) => {
     let emoji = e.native;
     setText((prevtext) => {
       return prevtext + emoji;
     });
+    textRef.current.focus();
   };
 
   const toggleEmojiPicker = () => setShowEmojiPicker(!showEmojiPicker);
 
+  useEffect(() => {
+    if (showEmojiPicker) {
+      textRef.current.focus();
+    }
+  }, [showEmojiPicker]);
+
   return (
     <>
-      <motion.div
-        style={{ zIndex: "-2" }}
-        initial={{ y: "100%" }}
+      <motion.section
+        initial={{ y: "100%", opacity: 0, display: "none" }}
         animate={showEmojiPicker ? "open" : "closed"}
+        transition={{ duration: 0.3, ease: "easeOut" }}
         variants={variants}
       >
         <Picker
           onSelect={addEmoji}
-          set="google"
           showPreview={false}
           showSkinTones={false}
-          emojiTooltip={true}
-          style={{ display: "block" }}
+          style={{ display: "inherit" }}
         />
-      </motion.div>
+      </motion.section>
       <div
         className="send-message-container"
         style={{ backgroundColor: "var(--very-light-gray)" }}
@@ -96,10 +116,19 @@ const SendMessageForm = () => {
           >
             <Form.Group controlId="userMessage" className="w-100 m-0">
               <Form.Control
+                as="textarea"
                 type="text"
-                className="rounded-pill"
                 placeholder="Type message here..."
+                style={{
+                  resize: "none",
+                  backgroundClip: "border-box",
+                  minHeight: "36px",
+                  maxHeight: "64px",
+                }}
                 value={text}
+                rows={1}
+                ref={textRef}
+                onKeyPress={submitOnEnter}
                 onChange={handleInputChange}
               />
             </Form.Group>
