@@ -138,15 +138,10 @@ export function ConversationsProvider({ children }) {
     if (socket == null) return;
 
     socket.on("recieve-message", async (message) => {
-      const date = new Date();
+      // const date = new Date();
       let newMessage = {
         ...message,
-        date: date.toLocaleDateString(),
-        time: date.toLocaleTimeString("en-US", {
-          hour12: false,
-          hour: "numeric",
-          minute: "numeric",
-        }),
+        //TODO://remove bug of sending time and receving time
       };
       //check if recipient already exist in contact
       const contact = await contacts.find(

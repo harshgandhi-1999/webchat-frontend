@@ -6,8 +6,8 @@ import { motion } from "framer-motion";
 import "./sidedrawer.css";
 
 const variants = {
-  open: { x: "0%" },
-  closed: { x: "-100%" },
+  open: { x: "0%", opacity: 1 },
+  closed: { x: "-100%", opacity: 0 },
 };
 
 const SideDrawer = ({ show, title, closeDrawer, children }) => {
@@ -16,6 +16,7 @@ const SideDrawer = ({ show, title, closeDrawer, children }) => {
       className="side-drawer d-flex flex-column shadow-sm"
       initial={{ x: "-100%" }}
       animate={show ? "open" : "closed"}
+      transition={{ duration: 0.3, ease: "easeOut" }}
       variants={variants}
     >
       <div className="side-drawer-header bg-primary text-white">
