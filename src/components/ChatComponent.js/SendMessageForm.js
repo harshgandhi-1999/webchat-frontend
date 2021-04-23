@@ -12,8 +12,29 @@ import { motion } from "framer-motion";
 import "./chatcomponent.css";
 
 const variants = {
-  open: { y: "0%", opacity: 1, display: "block" },
-  closed: { y: "100%", opacity: 0, display: "none" },
+  open: {
+    y: "0%",
+    opacity: 1,
+    transition: {
+      when: "afterChildren",
+      ease: "easeOut",
+      duration: "0.3",
+    },
+  },
+  closed: {
+    y: "100%",
+    opacity: 0,
+    transition: {
+      when: "beforeChildren",
+      ease: "easeIn",
+      duration: "0.3",
+    },
+  },
+};
+
+const item = {
+  open: { display: "block" },
+  closed: { display: "none" },
 };
 
 const SendMessageForm = () => {
@@ -53,7 +74,6 @@ const SendMessageForm = () => {
     const { value } = e.target;
     textRef.current.style.height = "36px";
     textRef.current.style.height = `${e.target.scrollHeight}px`;
-    console.log(textRef.current.style.height);
     setText(value);
   };
   const addEmoji = (e) => {
@@ -75,21 +95,22 @@ const SendMessageForm = () => {
   return (
     <>
       <motion.section
-        initial={{ y: "100%", opacity: 0, display: "none" }}
+        initial={{ y: "100%", opacity: 0 }}
         animate={showEmojiPicker ? "open" : "closed"}
-        transition={{ duration: 0.3, ease: "easeOut" }}
         variants={variants}
       >
-        <Picker
-          onSelect={addEmoji}
-          showPreview={false}
-          showSkinTones={false}
-          style={{ display: "inherit" }}
-        />
+        <motion.section variants={item}>
+          <Picker
+            onSelect={addEmoji}
+            showPreview={false}
+            showSkinTones={false}
+            style={{ zIndex: 1, display: "inherit" }}
+          />
+        </motion.section>
       </motion.section>
       <div
         className="send-message-container"
-        style={{ backgroundColor: "var(--very-light-gray)" }}
+        style={{ backgroundColor: "var(--very-light-gray)", zIndex: 2 }}
       >
         <div className="react-emoji">
           <Button
