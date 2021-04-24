@@ -48,26 +48,21 @@ export function ContactsProvider({ children }) {
           },
         })
         .then((res) => {
+          // _id of document is also coming in contact list in res
           setContacts(res.data.contactList);
         })
         .catch((err) => {
-          if (err.response) {
-            if (err.response.status === 401) {
-              logout();
-            } else {
-              toast.error(`${err.response.data.message}`);
-            }
+          if (err.response && err.response.status === 401) {
+            logout();
           } else {
-            toast.error(`${err.message}`, {
-              className: "some_error_toast",
-            });
+            toast.error("Some error occured. Please reload..");
           }
         });
     } else {
       setContacts([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, setContacts]);
-
   return (
     <ContactsContext.Provider
       value={{

@@ -3,6 +3,8 @@ import useLocalStorage from "../hooks/useLocalStorage";
 import { useAuth } from "./AuthProvider";
 import { useSocket } from "./SocketProvider";
 import { useContacts } from "./ContactProvider";
+import axiosInstance from "../utils/axios";
+import { toast } from "react-toastify";
 
 const ConversationsContext = React.createContext({
   conversations: [],
@@ -30,7 +32,7 @@ export function ConversationsProvider({ children }) {
 
   //using contact context and user context
   const { contacts } = useContacts();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { socket } = useSocket();
 
   const formattedConversations = conversations.map((conversation, index) => {
@@ -43,7 +45,23 @@ export function ConversationsProvider({ children }) {
     return { ...conversation, messages, selected };
   });
 
-  const createConversation = (recipient, cb) => {
+  const createConversation = async (recipient, cb) => {
+    //create new convo post request
+    const requestBody = {
+      contactNo: recipient.recipientNo,
+      name: recipient.recipientName,
+    };
+    const result = await axiosInstance.post(
+      `/createnew/${user.userId}`,
+      requestBody,
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      }
+    );
+    console.log(result);
+
     setConversations((prevConvo) => {
       return [...prevConvo, { recipient: recipient, messages: [] }];
     });
@@ -133,6 +151,28 @@ export function ConversationsProvider({ children }) {
     setSelectedConversation,
   ]);
 
+  //effect for fetching chat list
+  useEffect(() => {
+    axiosInstance
+      .get(`/chatlist/${user.userId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.chatList);
+        setConversations(res.data.chatList);
+      })
+      .catch((err) => {
+        if (err.response && err.response.status === 401) {
+          logout();
+        } else {
+          toast.error("Some error occured. Please reload...");
+        }
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, setConversations]);
+
   // effect for recieving message
   useEffect(() => {
     if (socket == null) return;
@@ -181,6 +221,7 @@ export function ConversationsProvider({ children }) {
         formattedConversations[selectedConversationIndex]
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedConversationIndex]);
 
   // console.log(selectedConversation);
