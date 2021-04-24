@@ -14,6 +14,7 @@ const ConversationsContext = React.createContext({
   selectConversationIndex: () => {},
   setSelectedConversation: () => {},
   updateNameInConversation: () => {},
+  setConversations: () => {},
 });
 
 export function useConversations() {
@@ -32,7 +33,7 @@ export function ConversationsProvider({ children }) {
 
   //using contact context and user context
   const { contacts } = useContacts();
-  const { user, logout } = useAuth();
+  const { user, logout, isLoggedIn } = useAuth();
   const { socket } = useSocket();
 
   const formattedConversations = conversations.map((conversation, index) => {
@@ -153,25 +154,26 @@ export function ConversationsProvider({ children }) {
 
   //effect for fetching chat list
   useEffect(() => {
-    axiosInstance
-      .get(`/chatlist/${user.userId}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.chatList);
-        setConversations(res.data.chatList);
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 401) {
-          logout();
-        } else {
-          toast.error("Some error occured. Please reload...");
-        }
-      });
+    if (isLoggedIn) {
+      axiosInstance
+        .get(`/chatlist/${user.userId}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        })
+        .then((res) => {
+          setConversations(res.data.chatList);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 401) {
+            logout();
+          } else {
+            toast.error("Some error occured. Please reload...");
+          }
+        });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, setConversations]);
+  }, [user, setConversations, isLoggedIn]);
 
   // effect for recieving message
   useEffect(() => {
@@ -235,6 +237,7 @@ export function ConversationsProvider({ children }) {
         selectedConversation: selectedConversation,
         setSelectedConversation: setSelectedConversation,
         selectConversationIndex: setSelectedConversationIndex,
+        setConversations: setConversations,
       }}
     >
       {children}
