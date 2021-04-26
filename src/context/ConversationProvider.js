@@ -14,7 +14,6 @@ const ConversationsContext = React.createContext({
   selectConversationIndex: () => {},
   setSelectedConversation: () => {},
   updateNameInConversation: () => {},
-  setConversations: () => {},
 });
 
 export function useConversations() {
@@ -61,9 +60,8 @@ export function ConversationsProvider({ children }) {
         },
       }
     );
-    console.log(result);
 
-    setConversations((prevConvo) => {
+    await setConversations((prevConvo) => {
       return [...prevConvo, { recipient: recipient, messages: [] }];
     });
     cb();
@@ -131,6 +129,53 @@ export function ConversationsProvider({ children }) {
         return convo;
       });
     });
+  };
+
+  //for selecting a particular chat from list
+  const setIndex = (index, recipient) => {
+    if (selectedConversationIndex !== index) {
+      const recipientNo = recipient.recipientNo;
+      const senderNo = user.contactNo;
+
+      //fetch conversation
+      axiosInstance
+        .get(`/getconvo/${user.userId}/`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+          params: {
+            participants: [senderNo, recipientNo],
+          },
+        })
+        .then((res) => {
+          const allMessages = res.data.allMessages.map((item) => {
+            return {
+              message: item.message,
+              date: item.date,
+              time: item.time,
+              sender: { contactNo: senderNo },
+              recipient: conversations[index].recipient,
+            };
+          });
+          setConversations((allConvo) => {
+            return allConvo.map((convo) => {
+              if (convo.recipient.recipientNo === recipientNo) {
+                return { ...convo, messages: allMessages };
+              }
+              return convo;
+            });
+          });
+          setSelectedConversationIndex(index);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response && err.response.status === 401) {
+            logout();
+          }
+
+          toast.error("Failed to load conversations.Some error occured...");
+        });
+    }
   };
 
   //effect for not logged in
@@ -226,7 +271,6 @@ export function ConversationsProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedConversationIndex]);
 
-  // console.log(selectedConversation);
   return (
     <ConversationsContext.Provider
       value={{
@@ -236,8 +280,7 @@ export function ConversationsProvider({ children }) {
         sendMessage,
         selectedConversation: selectedConversation,
         setSelectedConversation: setSelectedConversation,
-        selectConversationIndex: setSelectedConversationIndex,
-        setConversations: setConversations,
+        selectConversationIndex: setIndex,
       }}
     >
       {children}

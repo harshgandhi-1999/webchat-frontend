@@ -99,7 +99,7 @@ const SendMessageForm = () => {
         animate={showEmojiPicker ? "open" : "closed"}
         variants={variants}
       >
-        <motion.section variants={item}>
+        <motion.section variants={item} initial={{ display: "none" }}>
           <Picker
             onSelect={addEmoji}
             showPreview={false}

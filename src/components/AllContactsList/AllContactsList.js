@@ -20,17 +20,18 @@ const AllContactsList = ({ show, closeDrawer }) => {
       (el) => el.recipient.recipientNo === contactNo
     );
 
+    const recipient = {
+      recipientNo: contactNo,
+      recipientName: contactName,
+    };
+
     if (clickedItemIndex !== -1) {
       //means that it is already present in conversation list then select that index
-      selectConversationIndex(clickedItemIndex);
+      selectConversationIndex(clickedItemIndex, recipient);
     } else {
       //means not present, so create new conversation on select with no messages
-      const recipient = {
-        recipientNo: contactNo,
-        recipientName: contactName,
-      };
       createConversation(recipient, () =>
-        selectConversationIndex(conversations.length)
+        selectConversationIndex(conversations.length, recipient)
       );
     }
   };
