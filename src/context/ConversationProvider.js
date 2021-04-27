@@ -14,6 +14,8 @@ const ConversationsContext = React.createContext({
   selectConversationIndex: () => {},
   setSelectedConversation: () => {},
   updateNameInConversation: () => {},
+  msgLoading: Boolean,
+  setMsgLoading: () => {},
 });
 
 export function useConversations() {
@@ -29,6 +31,7 @@ export function ConversationsProvider({ children }) {
   const [selectedConversationIndex, setSelectedConversationIndex] = useState(
     null
   );
+  const [msgLoading, setMsgLoading] = useState(false);
 
   //using contact context and user context
   const { contacts } = useContacts();
@@ -45,30 +48,39 @@ export function ConversationsProvider({ children }) {
     return { ...conversation, messages, selected };
   });
 
-  const createConversation = async (recipient, cb) => {
+  const createConversation = (recipient, cb) => {
     //create new convo post request
     const requestBody = {
       contactNo: recipient.recipientNo,
       name: recipient.recipientName,
     };
-    const result = await axiosInstance.post(
-      `/createnew/${user.userId}`,
-      requestBody,
-      {
+    axiosInstance
+      .post(`/createnew/${user.userId}`, requestBody, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
-      }
-    );
-
-    await setConversations((prevConvo) => {
-      return [...prevConvo, { recipient: recipient, messages: [] }];
-    });
-    cb();
+      })
+      .then((res) => {
+        setConversations((prevConvo) => {
+          return [...prevConvo, { recipient: recipient, messages: [] }];
+        });
+        cb();
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          logout();
+        } else {
+          toast.error(
+            "Failed to create new conversation.Some error occured..."
+          );
+        }
+      });
   };
 
   const addMessageToConversation = useCallback(
     (newMessage) => {
+      console.log(newMessage);
       setConversations((prevConversations) => {
         let madeConvoInitially = false;
         const newConversations = prevConversations.map((convo) => {
@@ -85,6 +97,30 @@ export function ConversationsProvider({ children }) {
         if (madeConvoInitially) {
           return newConversations;
         } else {
+          //when new message is recieved then it will run
+          const requestBody = {
+            contactNo: newMessage.recipient.recipientNo,
+            name: newMessage.recipient.recipientName,
+          };
+          axiosInstance
+            .post(`/createnew/${user.userId}`, requestBody, {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+              if (err.response && err.response.status === 401) {
+                logout();
+              } else {
+                toast.error(
+                  "Failed to create new conversation.Some error occured..."
+                );
+              }
+            });
           return [
             ...prevConversations,
             { recipient: newMessage.recipient, messages: [newMessage] },
@@ -117,6 +153,7 @@ export function ConversationsProvider({ children }) {
   };
 
   const updateNameInConversation = (number, name, updatedMessages) => {
+    //TODO: update name in database also
     setConversations((prevConvo) => {
       return prevConvo.map((convo) => {
         if (convo.recipient.recipientNo === number) {
@@ -132,49 +169,50 @@ export function ConversationsProvider({ children }) {
   };
 
   //for selecting a particular chat from list
-  const setIndex = (index, recipient) => {
+  const setIndex = async (index, recipient) => {
     if (selectedConversationIndex !== index) {
       const recipientNo = recipient.recipientNo;
       const senderNo = user.contactNo;
+      setSelectedConversationIndex(index);
+      setMsgLoading(true);
 
-      //fetch conversation
-      axiosInstance
-        .get(`/getconvo/${user.userId}/`, {
+      // fetch conversation
+      try {
+        const result = await axiosInstance.get(`/getconvo/${user.userId}/`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
           params: {
             participants: [senderNo, recipientNo],
           },
-        })
-        .then((res) => {
-          const allMessages = res.data.allMessages.map((item) => {
-            return {
-              message: item.message,
-              date: item.date,
-              time: item.time,
-              sender: { contactNo: senderNo },
-              recipient: conversations[index].recipient,
-            };
-          });
-          setConversations((allConvo) => {
-            return allConvo.map((convo) => {
-              if (convo.recipient.recipientNo === recipientNo) {
-                return { ...convo, messages: allMessages };
-              }
-              return convo;
-            });
-          });
-          setSelectedConversationIndex(index);
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response && err.response.status === 401) {
-            logout();
-          }
-
-          toast.error("Failed to load conversations.Some error occured...");
         });
+
+        const allMessages = await result.data.allMessages.map((item) => {
+          return {
+            message: item.message,
+            date: item.date,
+            time: item.time,
+            sender: { contactNo: item.sender },
+            recipient: conversations[index].recipient,
+          };
+        });
+        setConversations((allConvo) => {
+          return allConvo.map((convo) => {
+            if (convo.recipient.recipientNo === recipientNo) {
+              return { ...convo, messages: allMessages };
+            }
+            return convo;
+          });
+        });
+      } catch (err) {
+        console.log(err);
+        if (err.response && err.response.status === 401) {
+          logout();
+        } else {
+          toast.error("Failed to load conversations.Some error occured...");
+        }
+      }
+      setMsgLoading(false);
     }
   };
 
@@ -196,6 +234,15 @@ export function ConversationsProvider({ children }) {
     setSelectedConversationIndex,
     setSelectedConversation,
   ]);
+
+  useEffect(() => {
+    if (selectedConversationIndex !== null) {
+      setSelectedConversation(
+        formattedConversations[selectedConversationIndex]
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConversationIndex, conversations]);
 
   //effect for fetching chat list
   useEffect(() => {
@@ -262,15 +309,6 @@ export function ConversationsProvider({ children }) {
     return () => socket.off("recieve-message");
   }, [socket, addMessageToConversation, selectedConversation, contacts]);
 
-  useEffect(() => {
-    if (selectedConversationIndex !== null) {
-      setSelectedConversation(
-        formattedConversations[selectedConversationIndex]
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedConversationIndex]);
-
   return (
     <ConversationsContext.Provider
       value={{
@@ -281,6 +319,8 @@ export function ConversationsProvider({ children }) {
         selectedConversation: selectedConversation,
         setSelectedConversation: setSelectedConversation,
         selectConversationIndex: setIndex,
+        msgLoading,
+        setMsgLoading,
       }}
     >
       {children}
