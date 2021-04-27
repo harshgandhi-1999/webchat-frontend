@@ -3,18 +3,23 @@ import MessageComponent from "./MessageComponent";
 import "./chatlistscrollbar.css";
 import "./chatcomponent.css";
 import { useConversations } from "../../context/ConversationProvider";
+import { Spinner } from "react-bootstrap";
 
 const ChatBox = () => {
-  const { selectedConversation } = useConversations();
+  const { selectedConversation, msgLoading } = useConversations();
   const setRef = useCallback((node) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
     }
   }, []);
+
   return (
     <div className="message-list flex-grow-1 px-4 py-4 d-flex flex-column justify-content-start align-items-start overflow-auto">
-      <div className="message-date">DATE</div>
-      {selectedConversation &&
+      {/* <div className="message-date">DATE</div> */}
+      {msgLoading ? (
+        <Spinner animation="border" variant="primary" className="msg-loading" />
+      ) : (
+        selectedConversation &&
         selectedConversation.messages &&
         selectedConversation.messages.map((item, index) => {
           const isLastMessage =
@@ -30,7 +35,8 @@ const ChatBox = () => {
               recipient={item.recipient}
             />
           );
-        })}
+        })
+      )}
     </div>
   );
 };

@@ -34,3 +34,8 @@ textarea:focus {
   outline: none !important;
   box-shadow: none !important;
 }
+
+.msg-loading {
+  position: absolute;
+  left: 50%;
+}
