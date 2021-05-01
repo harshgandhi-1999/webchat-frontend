@@ -19,19 +19,10 @@ export function ContactsProvider({ children }) {
 
   const createContact = (contactNo, name) => {
     setContacts((prevContacts) => {
-      return [...prevContacts, { contactNo, name }];
-    });
-  };
-
-  const updateContact = (contactNo, name) => {
-    setContacts((prevContacts) => {
-      const newContacts = prevContacts.map((contact) => {
-        if (contact.contactNo === contactNo) {
-          return { ...contact, name: name };
-        }
-        return contact;
-      });
-      return newContacts;
+      return {
+        ...prevContacts,
+        [contactNo]: { contactNo: contactNo, name: name },
+      };
     });
   };
 
@@ -42,14 +33,19 @@ export function ContactsProvider({ children }) {
       user.token !== null
     ) {
       axiosInstance
-        .get(`/allContacts/${user.userId}`, {
+        .get(`/contact/all/${user.userId}`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
         })
         .then((res) => {
+          //converting array into object of key value
+          let result = res.data.contactList.reduce(
+            (obj, item) => ({ ...obj, [item.contactNo]: item }),
+            {}
+          );
           // _id of document is also coming in contact list in res
-          setContacts(res.data.contactList);
+          setContacts(result);
         })
         .catch((err) => {
           if (err.response && err.response.status === 401) {
@@ -59,16 +55,16 @@ export function ContactsProvider({ children }) {
           }
         });
     } else {
-      setContacts([]);
+      setContacts({});
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, setContacts]);
+
   return (
     <ContactsContext.Provider
       value={{
         contacts: contacts,
         createContact: createContact,
-        updateContact: updateContact,
       }}
     >
       {children}

@@ -278,14 +278,18 @@ export function ConversationsProvider({ children }) {
         //TODO://remove bug of sending time and receving time
       };
       //check if recipient already exist in contact
-      const contact = await contacts.find(
-        (el) => el.contactNo === message.recipient.recipientNo
-      );
+      // const contact = await contacts.find(
+      //   (el) => el.contactNo === message.recipient.recipientNo
+      // );
+
       //then update message
-      if (contact) {
+      if (message.recipient.recipientNo in contacts) {
         newMessage = {
           ...newMessage,
-          recipient: { ...message.recipient, recipientName: contact.name },
+          recipient: {
+            ...message.recipient,
+            recipientName: contacts[message.recipient.recipientNo].name,
+          },
         };
       }
       addMessageToConversation(newMessage);

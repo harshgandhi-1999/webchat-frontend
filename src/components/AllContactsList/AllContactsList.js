@@ -43,7 +43,20 @@ const AllContactsList = ({ show, closeDrawer }) => {
       </div>
       <div className="all-contacts-list flex-grow-1 overflow-auto">
         <ListGroup style={{ background: "transparent" }}>
-          {contacts.map((contact) => {
+          {Object.keys(contacts).map((key) => {
+            return (
+              <ListGroup.Item
+                className="user-select-none"
+                key={contacts[key].contactNo}
+                onClick={() =>
+                  handleSelect(contacts[key].contactNo, contacts[key].name)
+                }
+              >
+                {contacts[key].name || contacts[key].contactNo}
+              </ListGroup.Item>
+            );
+          })}
+          {/* {contacts.map((contact) => {
             return (
               <ListGroup.Item
                 className="user-select-none"
@@ -53,7 +66,7 @@ const AllContactsList = ({ show, closeDrawer }) => {
                 {contact.name || contact.contactNo}
               </ListGroup.Item>
             );
-          })}
+          })} */}
         </ListGroup>
       </div>
     </SideDrawer>

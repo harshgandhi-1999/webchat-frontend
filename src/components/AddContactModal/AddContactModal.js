@@ -37,26 +37,28 @@ const AddContactModal = ({ show, handleClose, title, addName, number }) => {
       }
 
       //check if already there
-      const alreadyThere = contacts.some(
-        (el) => el.contactNo === contactNo || el.name === name
-      );
-      if (alreadyThere === true) {
+      // const alreadyThere = contacts.some(
+      //   (el) => el.contactNo === contactNo || el.name === name
+      // );
+
+      //if already there in contacts
+      if (contactNo in contacts) {
         toast.error("This contact already exists");
       } else {
-        const requestBody = {
-          contactNo,
-          name,
-        };
-        addContactRequest(event, requestBody, contactNo, name);
+        addContactRequest(event, contactNo, name);
       }
 
       setValidated(false);
     }
   };
 
-  const addContactRequest = (event, requestBody, contactNo, name) => {
+  const addContactRequest = (event, contactNo, name) => {
+    const requestBody = {
+      contactNo,
+      name,
+    };
     axiosInstance
-      .post(`/addContact/${user.userId}`, requestBody, {
+      .post(`/contact/add/${user.userId}`, requestBody, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
