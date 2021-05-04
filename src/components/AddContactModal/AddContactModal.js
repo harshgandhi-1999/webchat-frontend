@@ -36,11 +36,6 @@ const AddContactModal = ({ show, handleClose, title, addName, number }) => {
         contactNo = event.target.contactNo.value.trim();
       }
 
-      //check if already there
-      // const alreadyThere = contacts.some(
-      //   (el) => el.contactNo === contactNo || el.name === name
-      // );
-
       //if already there in contacts
       if (contactNo in contacts) {
         toast.error("This contact already exists");

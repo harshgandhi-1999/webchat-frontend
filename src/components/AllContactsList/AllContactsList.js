@@ -15,11 +15,6 @@ const AllContactsList = ({ show, closeDrawer }) => {
   } = useConversations();
 
   const handleSelect = (contactNo, contactName) => {
-    //checking if selected contact is already present in conversations list
-    // const clickedItemIndex = conversations.findIndex(
-    //   (el) => el.recipient.recipientNo === contactNo
-    // );
-
     const recipient = {
       recipientNo: contactNo,
       recipientName: contactName,
@@ -29,23 +24,11 @@ const AllContactsList = ({ show, closeDrawer }) => {
       //means that it is already present in conversation list then select that index
       //TODO: select conversation if already present
       selectConversationKey(contactNo);
-      // selectConversationIndex(clickedItemIndex, recipient);
     } else {
       //means not present, so create new conversation on select with no messages
-      createConversation(recipient);
-      //  () =>
-      //  selectConversationIndex(conversations.length, recipient)
+      //first create new conversation and then select that conversation
+      createConversation(recipient, () => selectConversationKey(contactNo));
     }
-
-    // if (clickedItemIndex !== -1) {
-    //   //means that it is already present in conversation list then select that index
-    //   selectConversationIndex(clickedItemIndex, recipient);
-    // } else {
-    //   //means not present, so create new conversation on select with no messages
-    //   createConversation(recipient, () =>
-    //     selectConversationIndex(conversations.length, recipient)
-    //   );
-    // }
   };
 
   return (
@@ -67,17 +50,6 @@ const AllContactsList = ({ show, closeDrawer }) => {
               </ListGroup.Item>
             );
           })}
-          {/* {contacts.map((contact) => {
-            return (
-              <ListGroup.Item
-                className="user-select-none"
-                key={contact.contactNo}
-                onClick={() => handleSelect(contact.contactNo, contact.name)}
-              >
-                {contact.name || contact.contactNo}
-              </ListGroup.Item>
-            );
-          })} */}
         </ListGroup>
       </div>
     </SideDrawer>

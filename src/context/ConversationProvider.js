@@ -36,16 +36,6 @@ export function ConversationsProvider({ children }) {
   const { user, logout, isLoggedIn } = useAuth();
   const { socket } = useSocket();
 
-  // const formattedConversations = conversations.map((conversation, index) => {
-  //   //for messages
-  //   const messages = conversation.messages.map((message) => {
-  //     const fromMe = user.contactNo === message.sender.contactNo;
-  //     return { ...message, fromMe };
-  //   });
-  //   const selected = index === selectedConversationIndex;
-  //   return { ...conversation, messages, selected };
-  // });
-
   const formattedConversations = Object.keys(conversations)
     .map((key) => {
       let value = conversations[key];
@@ -61,7 +51,7 @@ export function ConversationsProvider({ children }) {
     })
     .reduce(convertToObject, {});
 
-  const createConversation = (recipient) => {
+  const createConversation = (recipient, cb) => {
     //create new convo post request
     const requestBody = {
       contactNo: recipient.recipientNo,
@@ -80,6 +70,8 @@ export function ConversationsProvider({ children }) {
             [recipient.recipientNo]: { recipient: recipient, messages: [] },
           };
         });
+
+        cb();
       })
       .catch((err) => {
         console.log(err);
@@ -93,79 +85,78 @@ export function ConversationsProvider({ children }) {
       });
   };
 
-  // const addMessageToConversation = useCallback(
-  //   (newMessage) => {
-  //     console.log(newMessage);
-  //     setConversations((prevConversations) => {
-  //       let madeConvoInitially = false;
-  //       const newConversations = prevConversations.map((convo) => {
-  //         if (
-  //           convo.recipient.recipientNo === newMessage.recipient.recipientNo
-  //         ) {
-  //           madeConvoInitially = true;
-  //           return { ...convo, messages: [...convo.messages, newMessage] };
-  //         }
+  const addMessageToConversation = useCallback(
+    (newMessage) => {
+      console.log("in add message");
+      setConversations((prevConversations) => {
+        const key = newMessage.recipient.recipientNo;
+        const prevConvo = prevConversations[key];
 
-  //         return convo;
-  //       });
+        //if made convo initiallly
+        if (key in prevConversations) {
+          return {
+            ...prevConversations,
+            [key]: {
+              ...prevConvo,
+              messages: [...prevConvo.messages, newMessage],
+            },
+          };
+        } else {
+          //when new message is recieved then it will run to create new contact
+          const requestBody = {
+            contactNo: newMessage.recipient.recipientNo,
+            name: newMessage.recipient.recipientName,
+          };
+          console.log("userid = ", user.userId);
+          axiosInstance
+            .post(`/createnew/${user.userId}`, requestBody, {
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+              },
+            })
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+              if (err.response && err.response.status === 401) {
+                logout();
+              } else {
+                toast.error(
+                  "Failed to create new conversation.Some error occured..."
+                );
+              }
+            });
+          return {
+            ...prevConversations,
+            [key]: { recipient: newMessage.recipient, messages: [newMessage] },
+          };
+        }
+      });
+    },
+    [setConversations]
+  );
 
-  //       if (madeConvoInitially) {
-  //         return newConversations;
-  //       } else {
-  //         //when new message is recieved then it will run
-  //         const requestBody = {
-  //           contactNo: newMessage.recipient.recipientNo,
-  //           name: newMessage.recipient.recipientName,
-  //         };
-  //         axiosInstance
-  //           .post(`/createnew/${user.userId}`, requestBody, {
-  //             headers: {
-  //               Authorization: `Bearer ${user.token}`,
-  //             },
-  //           })
-  //           .then((res) => {
-  //             console.log(res);
-  //           })
-  //           .catch((err) => {
-  //             console.log(err);
-  //             if (err.response && err.response.status === 401) {
-  //               logout();
-  //             } else {
-  //               toast.error(
-  //                 "Failed to create new conversation.Some error occured..."
-  //               );
-  //             }
-  //           });
-  //         return [
-  //           ...prevConversations,
-  //           { recipient: newMessage.recipient, messages: [newMessage] },
-  //         ];
-  //       }
-  //     });
-  //   },
-  //   [setConversations]
-  // );
-
-  // const sendMessage = (messageBody) => {
-  //   socket.emit("send-message", messageBody);
-  //   addMessageToConversation({
-  //     ...messageBody,
-  //     sender: { contactNo: user.contactNo },
-  //   });
-  //   setSelectedConversation((prevSelected) => {
-  //     return {
-  //       ...prevSelected,
-  //       messages: [
-  //         ...prevSelected.messages,
-  //         {
-  //           ...messageBody,
-  //           fromMe: true,
-  //           sender: { contactNo: user.contactNo },
-  //         },
-  //       ],
-  //     };
-  //   });
-  // };
+  const sendMessage = (messageBody) => {
+    socket.emit("send-message", messageBody);
+    addMessageToConversation({
+      ...messageBody,
+      sender: { contactNo: user.contactNo },
+    });
+    setSelectedConversation((prevSelected) => {
+      return {
+        ...prevSelected,
+        messages: [
+          ...prevSelected.messages,
+          {
+            ...messageBody,
+            fromMe: true,
+            sender: { contactNo: user.contactNo },
+          },
+        ],
+      };
+    });
+  };
 
   // const updateNameInConversation = (number, name, updatedMessages) => {
   //   //TODO: update name in database also
@@ -257,74 +248,74 @@ export function ConversationsProvider({ children }) {
   }, [selectedConversationKey, conversations]);
 
   //effect for fetching chat list
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     axiosInstance
-  //       .get(`/chatlist/${user.userId}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${user.token}`,
-  //         },
-  //       })
-  //       .then((res) => {
-  //         console.log(res.data.chatList);
-  //         // setConversations(res.data.chatList);
-  //       })
-  //       .catch((err) => {
-  //         if (err.response && err.response.status === 401) {
-  //           logout();
-  //         } else {
-  //           toast.error("Some error occured. Please reload...");
-  //         }
-  //       });
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user, setConversations, isLoggedIn]);
+  useEffect(() => {
+    if (isLoggedIn) {
+      axiosInstance
+        .get(`/chatlist/${user.userId}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        })
+        .then((res) => {
+          //converting to object
+          let result = res.data.chatList.reduce(
+            (obj, item) => ({ ...obj, [item.recipient.recipientNo]: item }),
+            {}
+          );
+          setConversations(result);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 401) {
+            logout();
+          } else {
+            toast.error("Some error occured. Please reload...");
+          }
+        });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, setConversations, isLoggedIn]);
 
   // effect for recieving message
-  // useEffect(() => {
-  //   if (socket == null) return;
+  useEffect(() => {
+    if (socket == null) return;
 
-  //   socket.on("recieve-message", async (message) => {
-  //     // const date = new Date();
-  //     let newMessage = {
-  //       ...message,
-  //       //TODO://remove bug of sending time and receving time
-  //     };
-  //     //check if recipient already exist in contact
-  //     // const contact = await contacts.find(
-  //     //   (el) => el.contactNo === message.recipient.recipientNo
-  //     // );
+    socket.on("recieve-message", async (message) => {
+      // const date = new Date();
+      let newMessage = {
+        ...message,
+        //TODO://remove bug of sending time and receving time
+      };
 
-  //     //then update message
-  //     if (message.recipient.recipientNo in contacts) {
-  //       newMessage = {
-  //         ...newMessage,
-  //         recipient: {
-  //           ...message.recipient,
-  //           recipientName: contacts[message.recipient.recipientNo].name,
-  //         },
-  //       };
-  //     }
-  //     addMessageToConversation(newMessage);
-  //     if (
-  //       selectedConversation &&
-  //       selectedConversation.recipient.recipientNo ===
-  //         newMessage.recipient.recipientNo
-  //     ) {
-  //       setSelectedConversation((prevSelected) => {
-  //         return {
-  //           ...prevSelected,
-  //           messages: [
-  //             ...prevSelected.messages,
-  //             { ...newMessage, fromMe: false },
-  //           ],
-  //         };
-  //       });
-  //     }
-  //   });
+      //then update message
+      if (message.recipient.recipientNo in contacts) {
+        newMessage = {
+          ...newMessage,
+          recipient: {
+            ...message.recipient,
+            recipientName: contacts[message.recipient.recipientNo].name,
+          },
+        };
+      }
+      addMessageToConversation(newMessage);
+      if (
+        selectedConversation &&
+        selectedConversation.recipient.recipientNo ===
+          newMessage.recipient.recipientNo
+      ) {
+        setSelectedConversation((prevSelected) => {
+          return {
+            ...prevSelected,
+            messages: [
+              ...prevSelected.messages,
+              { ...newMessage, fromMe: false },
+            ],
+          };
+        });
+      }
+    });
 
-  //   return () => socket.off("recieve-message");
-  // }, [socket, addMessageToConversation, selectedConversation, contacts]);
+    return () => socket.off("recieve-message");
+  }, [socket, addMessageToConversation, selectedConversation, contacts]);
 
   return (
     <ConversationsContext.Provider
@@ -332,7 +323,7 @@ export function ConversationsProvider({ children }) {
         conversations: formattedConversations,
         createConversation,
         // updateNameInConversation,
-        // sendMessage,
+        sendMessage,
         selectedConversation: selectedConversation,
         setSelectedConversation: setSelectedConversation,
         selectConversationKey: setIndex,
