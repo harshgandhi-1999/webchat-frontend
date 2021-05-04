@@ -4,9 +4,6 @@ import { useConversations } from "../../context/ConversationProvider";
 
 const ChatList = () => {
   const { conversations, selectConversationKey } = useConversations();
-  // const handleSelect = (index, recipient) => {
-  //   selectConversationIndex(index, recipient);
-  // };
   const handleSelect = (key) => {
     selectConversationKey(key);
   };
@@ -27,20 +24,6 @@ const ChatList = () => {
           </ListGroup.Item>
         );
       })}
-      {/* {conversations.map((conversation, index) => {
-        return (
-          <ListGroup.Item
-            className="user-select-none"
-            action
-            active={conversation.selected}
-            key={index}
-            onClick={() => handleSelect(index, conversation.recipient)}
-          >
-            {conversation.recipient.recipientName ||
-              conversation.recipient.recipientNo}
-          </ListGroup.Item>
-        );
-      })} */}
     </ListGroup>
   );
 };
