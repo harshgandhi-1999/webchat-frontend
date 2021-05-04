@@ -3,14 +3,31 @@ import { ListGroup } from "react-bootstrap";
 import { useConversations } from "../../context/ConversationProvider";
 
 const ChatList = () => {
-  const { conversations, selectConversationIndex } = useConversations();
-  const handleSelect = (index, recipient) => {
-    selectConversationIndex(index, recipient);
+  const { conversations, selectConversationKey } = useConversations();
+  // const handleSelect = (index, recipient) => {
+  //   selectConversationIndex(index, recipient);
+  // };
+  const handleSelect = (key) => {
+    selectConversationKey(key);
   };
 
   return (
     <ListGroup style={{ background: "transparent" }}>
-      {conversations.map((conversation, index) => {
+      {Object.keys(conversations).map((key) => {
+        const convo = conversations[key];
+        return (
+          <ListGroup.Item
+            className="user-select-none"
+            action
+            active={convo.selected}
+            key={key}
+            onClick={() => handleSelect(key)}
+          >
+            {convo.recipient.recipientName || convo.recipient.recipientNo}
+          </ListGroup.Item>
+        );
+      })}
+      {/* {conversations.map((conversation, index) => {
         return (
           <ListGroup.Item
             className="user-select-none"
@@ -23,7 +40,7 @@ const ChatList = () => {
               conversation.recipient.recipientNo}
           </ListGroup.Item>
         );
-      })}
+      })} */}
     </ListGroup>
   );
 };

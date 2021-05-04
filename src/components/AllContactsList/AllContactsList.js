@@ -10,30 +10,42 @@ const AllContactsList = ({ show, closeDrawer }) => {
   const { contacts } = useContacts();
   const {
     conversations,
-    selectConversationIndex,
+    selectConversationKey,
     createConversation,
   } = useConversations();
 
   const handleSelect = (contactNo, contactName) => {
     //checking if selected contact is already present in conversations list
-    const clickedItemIndex = conversations.findIndex(
-      (el) => el.recipient.recipientNo === contactNo
-    );
+    // const clickedItemIndex = conversations.findIndex(
+    //   (el) => el.recipient.recipientNo === contactNo
+    // );
 
     const recipient = {
       recipientNo: contactNo,
       recipientName: contactName,
     };
 
-    if (clickedItemIndex !== -1) {
+    if (contactNo in conversations) {
       //means that it is already present in conversation list then select that index
-      selectConversationIndex(clickedItemIndex, recipient);
+      //TODO: select conversation if already present
+      selectConversationKey(contactNo);
+      // selectConversationIndex(clickedItemIndex, recipient);
     } else {
       //means not present, so create new conversation on select with no messages
-      createConversation(recipient, () =>
-        selectConversationIndex(conversations.length, recipient)
-      );
+      createConversation(recipient);
+      //  () =>
+      //  selectConversationIndex(conversations.length, recipient)
     }
+
+    // if (clickedItemIndex !== -1) {
+    //   //means that it is already present in conversation list then select that index
+    //   selectConversationIndex(clickedItemIndex, recipient);
+    // } else {
+    //   //means not present, so create new conversation on select with no messages
+    //   createConversation(recipient, () =>
+    //     selectConversationIndex(conversations.length, recipient)
+    //   );
+    // }
   };
 
   return (
@@ -44,15 +56,14 @@ const AllContactsList = ({ show, closeDrawer }) => {
       <div className="all-contacts-list flex-grow-1 overflow-auto">
         <ListGroup style={{ background: "transparent" }}>
           {Object.keys(contacts).map((key) => {
+            const contact = contacts[key];
             return (
               <ListGroup.Item
                 className="user-select-none"
-                key={contacts[key].contactNo}
-                onClick={() =>
-                  handleSelect(contacts[key].contactNo, contacts[key].name)
-                }
+                key={contact.contactNo}
+                onClick={() => handleSelect(contact.contactNo, contact.name)}
               >
-                {contacts[key].name || contacts[key].contactNo}
+                {contact.name || contact.contactNo}
               </ListGroup.Item>
             );
           })}
