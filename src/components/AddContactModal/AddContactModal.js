@@ -65,6 +65,7 @@ const AddContactModal = ({ show, handleClose, title, addName, number }) => {
 
         //if we have to add only name
         if (addName === true) {
+          //update name in all messages of selected conversation
           let updatedMessages = [];
           setSelectedConversation((prevSelected) => {
             updatedMessages = prevSelected.messages.map((item) => {

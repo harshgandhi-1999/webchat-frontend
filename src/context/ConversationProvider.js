@@ -44,7 +44,6 @@ export function ConversationsProvider({ children }) {
         return { ...message, fromMe };
       });
 
-      //TODO: selected convo logic to be implemented
       const selected = selectedConversationKey === key;
 
       return { [key]: { ...value, messages: messages, selected: selected } };
@@ -87,7 +86,6 @@ export function ConversationsProvider({ children }) {
 
   const addMessageToConversation = useCallback(
     (newMessage) => {
-      console.log("in add message");
       setConversations((prevConversations) => {
         const key = newMessage.recipient.recipientNo;
         const prevConvo = prevConversations[key];
@@ -102,21 +100,18 @@ export function ConversationsProvider({ children }) {
             },
           };
         } else {
-          //when new message is recieved then it will run to create new contact
+          //when new message is recieved then it will run to create new conversation in database
           const requestBody = {
             contactNo: newMessage.recipient.recipientNo,
             name: newMessage.recipient.recipientName,
           };
-          console.log("userid = ", user.userId);
           axiosInstance
             .post(`/createnew/${user.userId}`, requestBody, {
               headers: {
                 Authorization: `Bearer ${user.token}`,
               },
             })
-            .then((res) => {
-              console.log(res);
-            })
+            .then(() => {})
             .catch((err) => {
               console.log(err);
               if (err.response && err.response.status === 401) {
@@ -158,21 +153,40 @@ export function ConversationsProvider({ children }) {
     });
   };
 
-  // const updateNameInConversation = (number, name, updatedMessages) => {
-  //   //TODO: update name in database also
-  //   setConversations((prevConvo) => {
-  //     return prevConvo.map((convo) => {
-  //       if (convo.recipient.recipientNo === number) {
-  //         return {
-  //           ...convo,
-  //           recipient: { ...convo.recipient, recipientName: name },
-  //           messages: updatedMessages,
-  //         };
-  //       }
-  //       return convo;
-  //     });
-  //   });
-  // };
+  const updateNameInConversation = (number, name, updatedMessages) => {
+    //updating name in chat list
+    axiosInstance
+      .put(
+        `/chatlist/${user.userId}`,
+        {
+          contactNo: number,
+          name: name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      )
+      .then((res) => {
+        setConversations((prevConvo) => {
+          return {
+            ...prevConvo,
+            [number]: {
+              ...prevConvo[number],
+              recipient: {
+                ...prevConvo[number].recipient,
+                recipientName: name,
+              },
+              messages: updatedMessages,
+            },
+          };
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   //for selecting a particular chat from list
   const setIndex = async (key) => {
@@ -322,10 +336,10 @@ export function ConversationsProvider({ children }) {
       value={{
         conversations: formattedConversations,
         createConversation,
-        // updateNameInConversation,
+        updateNameInConversation,
         sendMessage,
-        selectedConversation: selectedConversation,
-        setSelectedConversation: setSelectedConversation,
+        selectedConversation,
+        setSelectedConversation,
         selectConversationKey: setIndex,
         msgLoading,
         setMsgLoading,
