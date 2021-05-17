@@ -4,7 +4,8 @@
 }
 
 .message-date {
-  position: fixed;
+  /* position: fixed; */
+  align-self: center;
   z-index: 1000;
   left: 50%;
   padding: 4px 8px;
