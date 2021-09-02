@@ -13,3 +13,5 @@ Frontend of web chat application made using reactjs
 - **Emoji-Mart** - _For embedding emoji picker in application_
 - **Framer-Motion** - _For animation_
 - **React-Toastify** - _For adding notications to application_
+## Deployment
+Deployed on Heroku - https://webchatgo.herokuapp.com/
