@@ -5,6 +5,7 @@ import { useSocket } from "./SocketProvider";
 import { useContacts } from "./ContactProvider";
 import axiosInstance from "../utils/axios";
 import { toast } from "react-toastify";
+import { encryptData, decryptData } from "../e2e/aes";
 
 const ConversationsContext = React.createContext({
   conversations: {},
@@ -129,11 +130,13 @@ export function ConversationsProvider({ children }) {
         }
       });
     },
-    [setConversations]
+    [user]
   );
 
   const sendMessage = (messageBody) => {
-    socket.emit("send-message", messageBody);
+    // ENCRYPTING MESSAGE BODY
+    let encryptedMessage = encryptData(messageBody);
+    socket.emit("send-message", encryptedMessage);
     addMessageToConversation({
       ...messageBody,
       sender: { contactNo: user.contactNo },
@@ -293,8 +296,10 @@ export function ConversationsProvider({ children }) {
   useEffect(() => {
     if (socket == null) return;
 
-    socket.on("recieve-message", async (message) => {
+    socket.on("recieve-message", async (messageBody) => {
       // const date = new Date();
+      // DECRYPTING MESSAGE BODY
+      let message = decryptData(messageBody);
       let newMessage = {
         ...message,
         //TODO://remove bug of sending time and receving time
