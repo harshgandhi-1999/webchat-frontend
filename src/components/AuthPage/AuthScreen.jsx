@@ -1,4 +1,3 @@
-import React from "react";
 import "./authscreen.css";
 import { Card, Tabs, Tab } from "react-bootstrap";
 import LoginComponent from "./LoginComponent";

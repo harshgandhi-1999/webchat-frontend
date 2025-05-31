@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form, Button, Spinner } from "react-bootstrap";
 import Label from "../FormLabel/Label";
 import axiosInstance from "../../utils/axios";
@@ -41,8 +41,9 @@ const LoginComponent = () => {
           console.log(err);
           setBtnLoading(false);
           if (err.response) {
+            console.log("Show toast");
             toast.error(`${err.response.data.message}`, {
-              toastId: "login_failed_toast",
+              toastId: `login_failed_toast_${Date.now()}`,
             });
             // alert(err.response.data.message);
           } else {
@@ -59,10 +60,10 @@ const LoginComponent = () => {
     <div>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Form.Group controlId="login_phoneNo">
-          <Label text="Phone no." />
+          <Label text="Mobile number" />
           <Form.Control
             type="text"
-            placeholder="Enter your phone no."
+            placeholder="Enter your mobile number"
             required
             pattern="^[6-9][0-9]{9}"
           />

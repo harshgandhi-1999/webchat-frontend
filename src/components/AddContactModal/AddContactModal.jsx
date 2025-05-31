@@ -16,10 +16,8 @@ const AddContactModal = ({ show, handleClose, title, addName, number }) => {
   const [validated, setValidated] = useState(false);
   const { contacts, createContact } = useContacts();
   const { user, logout } = useAuth();
-  const {
-    setSelectedConversation,
-    updateNameInConversation,
-  } = useConversations();
+  const { setSelectedConversation, updateNameInConversation } =
+    useConversations();
 
   const handleSubmit = (event) => {
     event.preventDefault();

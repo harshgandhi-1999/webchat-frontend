@@ -22,6 +22,8 @@ const Content = () => {
     }
   };
 
+  console.log(isLoggedIn);
+
   if (isLoggedIn) {
     return (
       <div className="content-style bg-white d-flex flex-column overflow-hidden">

@@ -5,7 +5,7 @@ import { useSocket } from "./SocketProvider";
 import { useContacts } from "./ContactProvider";
 import axiosInstance from "../utils/axios";
 import { toast } from "react-toastify";
-import { encryptData, decryptData } from "../e2e/aes";
+// import { encryptData, decryptData } from "../e2e/aes";
 
 const ConversationsContext = React.createContext({
   conversations: {},
@@ -63,7 +63,7 @@ export function ConversationsProvider({ children }) {
           Authorization: `Bearer ${user.token}`,
         },
       })
-      .then((res) => {
+      .then(() => {
         setConversations((prevConvo) => {
           return {
             ...prevConvo,
@@ -135,7 +135,8 @@ export function ConversationsProvider({ children }) {
 
   const sendMessage = (messageBody) => {
     // ENCRYPTING MESSAGE BODY
-    let encryptedMessage = encryptData(messageBody);
+    // let encryptedMessage = encryptData(messageBody);
+    let encryptedMessage = messageBody;
     socket.emit("send-message", encryptedMessage);
     addMessageToConversation({
       ...messageBody,
@@ -148,8 +149,8 @@ export function ConversationsProvider({ children }) {
           ...prevSelected.messages,
           {
             ...messageBody,
-            fromMe: true,
-            sender: { contactNo: user.contactNo },
+            // fromMe: true,
+            // sender: { contactNo: user.contactNo },
           },
         ],
       };
@@ -171,7 +172,7 @@ export function ConversationsProvider({ children }) {
           },
         }
       )
-      .then((res) => {
+      .then(() => {
         setConversations((prevConvo) => {
           return {
             ...prevConvo,
@@ -299,19 +300,21 @@ export function ConversationsProvider({ children }) {
     socket.on("recieve-message", async (messageBody) => {
       // const date = new Date();
       // DECRYPTING MESSAGE BODY
-      let message = decryptData(messageBody);
+      // let message = decryptData(messageBody);
+      let message = messageBody;
       let newMessage = {
         ...message,
         //TODO://remove bug of sending time and receving time
       };
 
       //then update message
-      if (message.recipient.recipientNo in contacts) {
+      if (message.senderId in contacts) {
         newMessage = {
           ...newMessage,
           recipient: {
-            ...message.recipient,
-            recipientName: contacts[message.recipient.recipientNo].name,
+            // TODO: change recipient to sender here
+            ...message.senderId,
+            recipientName: contacts[message.senderId].name,
           },
         };
       }

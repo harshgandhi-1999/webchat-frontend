@@ -55,7 +55,7 @@ const SendMessageForm = () => {
           hour: "numeric",
           minute: "numeric",
         }),
-        recipient: selectedConversation.recipient,
+        recipientId: selectedConversation.recipient,
       };
       sendMessage(messageBody);
       setText("");

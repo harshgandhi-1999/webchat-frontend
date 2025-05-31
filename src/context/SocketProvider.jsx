@@ -11,27 +11,28 @@ export function useSocket() {
 export function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null);
 
-  const { isLoggedIn, user, logout } = useAuth();
+  // const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, user } = useAuth();
 
   useEffect(() => {
     if (isLoggedIn === true) {
-      const newSocket = io("https://webchatbackend.herokuapp.com/", {
-        query: { contactNo: user.contactNo, username: user.username },
-        extraHeaders: { Authorization: `Bearer ${user.token}` },
+      const newSocket = io("http://localhost:8000/", {
+        query: { senderId: user.contactNo },
+        // extraHeaders: { Authorization: `Bearer ${user.token}` },
         transports: ["polling", "websocket"],
       });
 
-      newSocket.on("unauthorized", (error, callback) => {
-        if (
-          error.data.type === "UnauthorizedError" ||
-          error.data.code === "invalid_token"
-        ) {
-          // redirect user to login page perhaps?
-          callback();
-          logout();
-          console.log("User token has expired");
-        }
-      });
+      // newSocket.on("unauthorized", (error, callback) => {
+      //   if (
+      //     error.data.type === "UnauthorizedError" ||
+      //     error.data.code === "invalid_token"
+      //   ) {
+      //     // redirect user to login page perhaps?
+      //     callback();
+      //     logout();
+      //     console.log("User token has expired");
+      //   }
+      // });
 
       setSocket(newSocket);
       return () => newSocket.close();
