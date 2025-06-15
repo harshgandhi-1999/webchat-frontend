@@ -14,4 +14,4 @@ Frontend of web chat application made using reactjs
 - **Framer-Motion** - _For animation_
 - **React-Toastify** - _For adding notications to application_
 ## Deployment
-Deployed on Heroku - https://webchatgo.herokuapp.com/
+Deployed on Heroku.
